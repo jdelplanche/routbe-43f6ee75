@@ -289,7 +289,7 @@ export function ThemePresets({ selectedTheme, onThemeChange }: ThemePresetsProps
                   }}
                 />
               </span>
-              <span className="w-full truncate text-center text-[10px] font-medium leading-tight text-foreground">
+              <span className="w-full text-balance text-center text-[10px] font-medium leading-tight tracking-tight text-foreground [overflow-wrap:anywhere]">
                 {theme.name}
               </span>
             </button>
