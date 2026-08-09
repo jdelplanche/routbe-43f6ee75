@@ -34,11 +34,12 @@ function isLocale(value: unknown): value is Locale {
 
 /**
  * Language resolution order: explicit choice in localStorage, then the browser
- * language (Dutch/Flemish wins for `nl`), then English. URLs stay clean — the
- * locale never appears as a path prefix.
+ * or system language (Dutch/Flemish wins for `nl`), then English as the
+ * international default. URLs stay clean — the locale never appears as a path
+ * prefix, and the header switcher always allows a manual override.
  */
 export function detectLocale(): Locale {
-  if (typeof window === "undefined") return "nl";
+  if (typeof window === "undefined") return "en";
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (isLocale(stored)) return stored;
@@ -59,7 +60,7 @@ export function detectLocale(): Locale {
 if (!i18next.isInitialized) {
   void i18next.init({
     resources: RESOURCES,
-    lng: "nl",
+    lng: "en",
     fallbackLng: "en",
     interpolation: { escapeValue: false },
     returnNull: false,
