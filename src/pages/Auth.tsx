@@ -10,9 +10,7 @@ import { toast } from "sonner";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { ArrowLeft, Fingerprint, KeyRound, Loader2, Mail, MailCheck, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { MaskedIcon } from "@/components/MaskedIcon";
 import { PasswordField } from "@/components/PasswordField";
-import { BRAND_MARKS } from "@/lib/brand-marks";
 import { getBootstrapState } from "@/lib/bootstrap.functions";
 import { amIAdmin } from "@/lib/admin.functions";
 
@@ -25,36 +23,37 @@ const MARKS: Record<string, string> = {
   google:
     "M12 11v3.2h5.3c-.2 1.4-1.6 4-5.3 4a5.7 5.7 0 010-11.4c1.7 0 2.9.7 3.6 1.4l2.5-2.4A9.1 9.1 0 0012 3a9 9 0 100 18c5.2 0 8.7-3.7 8.7-8.8 0-.6-.1-1-.2-1.4H12z",
   oidc: "M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4zm0 2.2L6 7v5c0 3.8 2.5 6.7 6 7.8 3.5-1.1 6-4 6-7.8V7l-6-2.8zM12 8a3 3 0 110 6 3 3 0 010-6z",
+  // Inline so the tiles always render — remote marks 404 until the site is published.
+  mastodon:
+    "M20.9 7.7c-.3-2.3-2.3-4.1-4.6-4.4C15.9 3.2 14.5 3 12 3s-3.9.2-4.3.3C5.4 3.6 3.4 5.4 3.1 7.7 2.9 9 2.9 10.3 3 11.6c.1 1.9.2 3.4.4 4.5.4 2.1 2.1 3.4 4.5 3.6 1.1.1 2.1.1 3.2 0l.1-1.9c-1 .1-2 .1-3-.1-1.1-.2-1.7-.8-1.9-1.8 2.4.6 4.9.6 7.3 0 2.4-.5 3.9-2.2 4.1-4.7.1-1.1.2-2.3 0-3.5zm-3.2 5.5h-1.9V8.9c0-.9-.4-1.4-1.2-1.4-.8 0-1.3.5-1.3 1.6v2.3h-1.9V9.1c0-1.1-.4-1.6-1.2-1.6-.8 0-1.2.5-1.2 1.4v4.3H6.9V8.8c0-.9.2-1.7.7-2.2.5-.6 1.2-.9 2.1-.9 1 0 1.8.4 2.3 1.2l.5.8.5-.8c.5-.8 1.2-1.2 2.3-1.2.9 0 1.6.3 2.1.9.5.5.7 1.3.7 2.2v4.4z",
+  keycloak:
+    "M12 2l8.7 5v10L12 22l-8.7-5V7L12 2zm0 2.3L5.3 8.2v7.6L12 19.7l6.7-3.9V8.2L12 4.3zm0 3.2a4.5 4.5 0 013.9 6.8l-1.6-.9a2.7 2.7 0 10-1 1l.9 1.6A4.5 4.5 0 1112 7.5z",
 };
 
 type ProviderKey = "google" | "github" | "gitlab" | "oidc";
 
-/**
- * Auth tiles. `mark` is an inline path, `remote` an official asset that is CSS
- * masked so every logo renders in the single theme text colour.
- */
+/** Auth tiles. Every `mark` is an inline path so the row never renders blank. */
 const TILES: {
   id: string;
   label: string;
   provider: ProviderKey;
-  mark?: string;
-  remote?: string;
+  mark: string;
 }[] = [
-  { id: "github", label: "GitHub", provider: "github", mark: MARKS.github },
-  { id: "google", label: "Google", provider: "google", mark: MARKS.google },
+  { id: "github", label: "GitHub", provider: "github", mark: MARKS.github! },
+  { id: "google", label: "Google", provider: "google", mark: MARKS.google! },
   {
     id: "mastodon",
     label: "Mastodon / Fediverse",
     provider: "gitlab",
-    remote: BRAND_MARKS.mastodon,
+    mark: MARKS.mastodon!,
   },
   {
     id: "keycloak",
     label: "Keycloak / Custom OIDC",
     provider: "oidc",
-    remote: BRAND_MARKS.keycloak,
+    mark: MARKS.keycloak!,
   },
-  { id: "gitlab", label: "GitLab", provider: "gitlab", mark: MARKS.gitlab },
+  { id: "gitlab", label: "GitLab", provider: "gitlab", mark: MARKS.gitlab! },
 ];
 
 const PROVIDER_LABELS: Record<string, string> = {
@@ -282,7 +281,7 @@ export default function Auth() {
           </p>
 
           {/* Secondary connectors — equal weight, all masked to one colour */}
-          <div data-testid="auth-provider-tiles" className="mt-3.5 grid grid-cols-6 gap-2">
+          <div data-testid="auth-provider-tiles" className="mt-3.5 grid grid-cols-5 gap-2">
             {TILES.map((tile) => (
               <button
                 key={tile.id}
@@ -293,13 +292,9 @@ export default function Auth() {
                 title={`Continue with ${tile.label}`}
                 className="flex h-10 items-center justify-center rounded-xl border border-border/50 p-2 text-foreground transition-colors hover:bg-muted/50 disabled:opacity-60"
               >
-                {tile.remote ? (
-                  <MaskedIcon src={tile.remote} className="h-4 w-4" />
-                ) : (
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                    <path d={tile.mark} />
-                  </svg>
-                )}
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d={tile.mark} />
+                </svg>
               </button>
             ))}
           </div>
@@ -324,8 +319,8 @@ export default function Auth() {
             >
               <MailCheck className="mx-auto h-6 w-6" aria-hidden />
               <p className="text-sm leading-relaxed">
-                We hebben een veilige inloglink gestuurd naar <strong>{sentTo}</strong>. Controleer
-                je inbox om direct in te loggen of je account te activeren.
+                We sent a secure sign-in link to <strong>{sentTo}</strong>. Open your inbox to sign
+                in or activate your account right away.
               </p>
               <button
                 type="button"

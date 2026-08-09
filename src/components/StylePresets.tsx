@@ -258,7 +258,7 @@ export function StylePresets({ current, onApply }: StylePresetsProps) {
           className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border px-3 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <Download className="h-3 w-3" aria-hidden />
-          Exporteer stijlen (JSON)
+          Export styles (JSON)
         </button>
         <button
           type="button"
@@ -267,7 +267,7 @@ export function StylePresets({ current, onApply }: StylePresetsProps) {
           className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border px-3 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <Upload className="h-3 w-3" aria-hidden />
-          Importeer stijlen
+          Import styles
         </button>
         <input
           ref={fileRef}
