@@ -123,7 +123,7 @@ export default function Auth() {
     } catch {
       /* not an admin, or the probe failed — fall through */
     }
-    return "/dashboard";
+    return "/claim";
   };
 
   useEffect(() => {
