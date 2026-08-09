@@ -284,7 +284,7 @@ export function ThemePresets({ selectedTheme, onThemeChange }: ThemePresetsProps
                 <MiniQrGlyph
                   shape={theme.shape}
                   className="relative h-5 w-5"
-                  {...{ style: { color: theme.fgColor } }}
+                  style={{ color: theme.fgColor }}
                 />
               </span>
               <span className="w-full text-balance text-center text-[10px] font-medium leading-tight tracking-tight text-foreground [overflow-wrap:anywhere]">

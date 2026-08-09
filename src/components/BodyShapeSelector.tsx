@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SelectionIndicator } from "./SelectionIndicator";
@@ -77,12 +78,21 @@ function glyphModule(shape: BodyShape, x: number, y: number) {
 export function MiniQrGlyph({
   shape = "square",
   className,
+  style,
 }: {
   shape?: BodyShape;
   className?: string;
+  style?: CSSProperties;
 }) {
   return (
-    <svg viewBox="0 0 7 7" role="img" aria-hidden="true" className={className} fill="currentColor">
+    <svg
+      viewBox="0 0 7 7"
+      role="img"
+      aria-hidden="true"
+      className={className}
+      style={style}
+      fill="currentColor"
+    >
       {GLYPH_MATRIX.flatMap((row, y) =>
         row.map((on, x) => (on ? glyphModule(shape, x, y) : null)).filter(Boolean),
       )}
