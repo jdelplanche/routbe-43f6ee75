@@ -559,3 +559,84 @@ textarea:focus-visible {
     mask-image: none;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Design system primitives
+   One scale for spacing, type and interactive surfaces so every
+   screen composes from the same handful of decisions.
+   ───────────────────────────────────────────────────────────── */
+
+@theme {
+  --spacing-section: 4rem;
+  --spacing-section-lg: 6rem;
+  --spacing-gutter: 1rem;
+}
+
+/* Vertical rhythm for a full-width page section. */
+@utility section-y {
+  padding-block: 2.5rem;
+
+  @media (width >= 48rem) {
+    padding-block: 4rem;
+  }
+}
+
+/* Type scale — display for headings, sans for prose. */
+@utility text-display-1 {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+@utility text-display-2 {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+@utility text-eyebrow {
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Consistent interactive sizing: 44px min target on touch. */
+@utility tap-target {
+  min-block-size: 2.75rem;
+  min-inline-size: 2.75rem;
+}
+
+/*
+ * Accessibility: keyboard users must always see where they are. Inputs above
+ * suppress their outline for aesthetics, so restore an explicit, high-contrast
+ * ring for every focusable element reached by keyboard.
+ */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  border-radius: calc(var(--radius) - 0.25rem);
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 1px;
+  border-color: hsl(var(--ring));
+}
+
+/* Respect reduced-motion for every decorative animation. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
