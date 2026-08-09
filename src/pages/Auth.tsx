@@ -282,7 +282,7 @@ export default function Auth() {
           </p>
 
           {/* Secondary connectors — equal weight, all masked to one colour */}
-          <div data-testid="auth-provider-tiles" className="mt-3.5 grid grid-cols-6 gap-2">
+          <div data-testid="auth-provider-tiles" className="mt-3.5 grid grid-cols-5 gap-2">
             {TILES.map((tile) => (
               <button
                 key={tile.id}
@@ -324,8 +324,8 @@ export default function Auth() {
             >
               <MailCheck className="mx-auto h-6 w-6" aria-hidden />
               <p className="text-sm leading-relaxed">
-                We hebben een veilige inloglink gestuurd naar <strong>{sentTo}</strong>. Controleer
-                je inbox om direct in te loggen of je account te activeren.
+                We sent a secure sign-in link to <strong>{sentTo}</strong>. Open your inbox to sign
+                in or activate your account right away.
               </p>
               <button
                 type="button"
