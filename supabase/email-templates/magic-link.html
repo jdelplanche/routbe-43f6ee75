@@ -66,6 +66,16 @@
                     </td>
                   </tr>
                 </table>
+                <!-- Cross-device fallback: the same sign-in as a typed 6-digit code. -->
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:separate;margin:0 0 18px;">
+                  <tr>
+                    <td align="center" bgcolor="#F4F1EA" style="background-color:#F4F1EA;border:1px solid #E5E0D6;border-radius:14px;padding:16px 18px;">
+                      <p style="margin:0 0 8px;font-size:12px;line-height:18px;letter-spacing:0.08em;text-transform:uppercase;color:#9A948A;">Of gebruik deze code</p>
+                      <p style="margin:0 0 8px;font-family:'DM Mono',Menlo,Consolas,'Courier New',monospace;font-size:30px;line-height:38px;font-weight:700;letter-spacing:0.28em;color:#1A1A1A;">{{ .Token }}</p>
+                      <p style="margin:0;font-size:12px;line-height:19px;color:#5C574F;">Typ deze 6-cijferige code in het inlogscherm op het toestel waar je begon.</p>
+                    </td>
+                  </tr>
+                </table>
                 <p style="margin:0 0 6px;font-size:12px;line-height:19px;color:#9A948A;">Werkt de knop niet? Kopieer deze link:</p>
                 <p style="margin:0;font-size:12px;line-height:19px;word-break:break-all;"><a href="{{ .ConfirmationURL }}" style="color:#2D4A3E;text-decoration:none;">{{ .ConfirmationURL }}</a></p>
               </td>

@@ -46,26 +46,31 @@ export type SendableTemplate = keyof typeof TEMPLATE_MAP;
 /** Realistic sample data for every template, used both for previews and as a reference here. */
 export const SAMPLE_DATA: Record<TestTemplate, Record<string, string>> = {
   confirmation: {
+    Token: "482913",
     ConfirmationURL: "https://rout.be/auth/confirm?token=pkce_a1b2c3d4e5f6&type=signup",
     SiteURL: "https://rout.be",
     Email: "jasper.devries@voorbeeld.be",
   },
   "magic-link": {
+    Token: "482913",
     ConfirmationURL: "https://rout.be/auth/confirm?token=pkce_9f8e7d6c5b4a&type=magiclink",
     SiteURL: "https://rout.be",
     Email: "jasper.devries@voorbeeld.be",
   },
   recovery: {
+    Token: "482913",
     ConfirmationURL: "https://rout.be/auth/confirm?token=pkce_4c3b2a1f0e9d&type=recovery",
     SiteURL: "https://rout.be",
     Email: "jasper.devries@voorbeeld.be",
   },
   invite: {
+    Token: "482913",
     ConfirmationURL: "https://rout.be/auth/confirm?token=pkce_7a6b5c4d3e2f&type=invite",
     SiteURL: "https://rout.be",
     Email: "nieuwe.gebruiker@voorbeeld.be",
   },
   "email-change": {
+    Token: "482913",
     ConfirmationURL: "https://rout.be/auth/confirm?token=pkce_2e1d0c9b8a7f&type=email_change",
     SiteURL: "https://rout.be",
     Email: "oud@voorbeeld.be",

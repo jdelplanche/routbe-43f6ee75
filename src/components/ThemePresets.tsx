@@ -4,7 +4,7 @@ import { SelectionIndicator } from "./SelectionIndicator";
 import { PickerAnnouncer } from "./PickerAnnouncer";
 
 import { useRovingRadioGroup } from "@/hooks/useRovingRadioGroup";
-import type { BodyShape } from "./BodyShapeSelector";
+import { MiniQrGlyph, type BodyShape } from "./BodyShapeSelector";
 
 export type ThemeCategory = "minimal" | "vibrant" | "dark" | "brand";
 
@@ -279,14 +279,12 @@ export function ThemePresets({ selectedTheme, onThemeChange }: ThemePresetsProps
                   backgroundPosition: theme.preview ? "0 0, 0 4px, 4px -4px, -4px 0" : undefined,
                 }}
               >
-                {/* Bottom-right half shows the foreground colour so both BG + FG read at a glance */}
-                <span
-                  aria-hidden
-                  className="absolute inset-0"
-                  style={{
-                    backgroundColor: theme.fgColor,
-                    clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
-                  }}
+                {/* Mini QR in the theme's own module shape + foreground colour,
+                    so every swatch reads as a real preview instead of an empty dot. */}
+                <MiniQrGlyph
+                  shape={theme.shape}
+                  className="relative h-5 w-5"
+                  style={{ color: theme.fgColor }}
                 />
               </span>
               <span className="w-full text-balance text-center text-[10px] font-medium leading-tight tracking-tight text-foreground [overflow-wrap:anywhere]">

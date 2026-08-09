@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SelectionIndicator } from "./SelectionIndicator";
@@ -31,27 +32,92 @@ export const PATTERNS: PatternItem[] = [
   ...ARTISTIC_PATTERNS.map((p) => ({ id: p.id as BodyShape, label: p.label, hint: p.hint })),
 ];
 
-/** Small themed thumbnail for one pattern (mask for the geometric SVG assets). */
+/**
+ * Mini QR illustration used as the thumbnail for every geometric pattern.
+ *
+ * Drawn inline instead of masking a remote SVG: cross-origin mask images are
+ * subject to CORS and silently fail, which is why these tiles rendered empty.
+ */
+const GLYPH_MATRIX = [
+  [1, 1, 1, 0, 1, 0, 1],
+  [1, 0, 1, 0, 0, 1, 1],
+  [1, 1, 1, 0, 1, 0, 0],
+  [0, 0, 0, 1, 0, 1, 1],
+  [1, 1, 0, 1, 1, 1, 0],
+  [0, 1, 1, 0, 0, 1, 0],
+  [1, 0, 1, 1, 1, 0, 1],
+];
+
+function glyphModule(shape: BodyShape, x: number, y: number) {
+  const k = `${x}-${y}`;
+  switch (shape) {
+    case "dots":
+      return <circle key={k} cx={x + 0.5} cy={y + 0.5} r={0.45} />;
+    case "rounded":
+      return <rect key={k} x={x + 0.05} y={y + 0.05} width={0.9} height={0.9} rx={0.34} />;
+    case "sharp":
+      return (
+        <polygon
+          key={k}
+          points={`${x + 0.5},${y + 0.02} ${x + 0.98},${y + 0.5} ${x + 0.5},${y + 0.98} ${x + 0.02},${y + 0.5}`}
+        />
+      );
+    case "classy":
+      return (
+        <path
+          key={k}
+          d={`M${x + 0.42} ${y}H${x + 1}V${y + 0.58}A${0.42} ${0.42} 0 0 1 ${x + 0.58} ${y + 1}H${x}V${y + 0.42}A${0.42} ${0.42} 0 0 1 ${x + 0.42} ${y}Z`}
+        />
+      );
+    default:
+      return <rect key={k} x={x} y={y} width={1} height={1} />;
+  }
+}
+
+/** Bare mini-QR illustration in the given module shape. */
+export function MiniQrGlyph({
+  shape = "square",
+  className,
+  style,
+}: {
+  shape?: BodyShape;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <svg
+      viewBox="0 0 7 7"
+      role="img"
+      aria-hidden="true"
+      className={className}
+      style={style}
+      fill="currentColor"
+    >
+      {GLYPH_MATRIX.flatMap((row, y) =>
+        row.map((on, x) => (on ? glyphModule(shape, x, y) : null)).filter(Boolean),
+      )}
+    </svg>
+  );
+}
+
+/** Small themed thumbnail for one pattern. */
 export function PatternGlyph({ pattern }: { pattern: PatternItem }) {
   if (!pattern.icon) return <ArtisticGlyph id={pattern.id as ArtisticPatternId} />;
   return (
-    <span
+    <svg
+      viewBox="0 0 7 7"
       role="img"
       aria-hidden="true"
-      className="h-full w-full bg-foreground"
-      style={{
-        WebkitMaskImage: `url(${pattern.icon})`,
-        maskImage: `url(${pattern.icon})`,
-        WebkitMaskRepeat: "no-repeat",
-        maskRepeat: "no-repeat",
-        WebkitMaskPosition: "center",
-        maskPosition: "center",
-        WebkitMaskSize: "contain",
-        maskSize: "contain",
-      }}
-    />
+      className="h-full w-full"
+      fill="currentColor"
+    >
+      {GLYPH_MATRIX.flatMap((row, y) =>
+        row.map((on, x) => (on ? glyphModule(pattern.id, x, y) : null)).filter(Boolean),
+      )}
+    </svg>
   );
 }
+
 
 /**
  * Compact pattern summary: shows the active style and opens the shape studio.

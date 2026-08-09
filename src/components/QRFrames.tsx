@@ -570,6 +570,54 @@ const shoppingSale: FrameDef = {
     `),
 };
 
+// ─────────────── PROFESSIONAL GEOMETRIC (standard) ───────────────
+// Simple shapes that never intrude on the QR modules; the CTA always sits in
+// a padded band below the code so scannability is untouched.
+
+const standardSoftBox: FrameDef = {
+  id: "std-soft-box",
+  name: "Rounded Rectangle",
+  category: "standard",
+  defaultLabel: "SCAN ME",
+  render: (o) =>
+    wrap(`
+      <rect x="12" y="12" width="376" height="476" rx="34" fill="${o.bg}" stroke="${o.color}" stroke-width="2.5"/>
+      ${qrSlot(o)}
+      <text x="200" y="428" text-anchor="middle" fill="${o.color}" font-family="${o.font ?? `ui-sans-serif, system-ui, sans-serif`}" font-size="26" font-weight="600" letter-spacing="4">${escape(o.label)}</text>
+    `),
+};
+
+const standardCircle: FrameDef = {
+  id: "std-circle",
+  name: "Elegant Circle",
+  category: "standard",
+  defaultLabel: "SCAN ME",
+  render: (o) =>
+    wrap(`
+      <rect x="0" y="0" width="400" height="500" fill="${o.bg}"/>
+      <circle cx="200" cy="200" r="186" fill="none" stroke="${o.color}" stroke-width="2.5"/>
+      ${qrSlot(o)}
+      <text x="200" y="440" text-anchor="middle" fill="${o.color}" font-family="${o.font ?? `ui-sans-serif, system-ui, sans-serif`}" font-size="26" font-weight="600" letter-spacing="4">${escape(o.label)}</text>
+    `),
+};
+
+const standardMinimalCorners: FrameDef = {
+  id: "std-min-corners",
+  name: "Minimalist Corners",
+  category: "standard",
+  defaultLabel: "SCAN ME",
+  render: (o) =>
+    wrap(`
+      <rect x="0" y="0" width="400" height="500" fill="${o.bg}"/>
+      <path d="M24 76 V44 A20 20 0 0 1 44 24 H76" fill="none" stroke="${o.color}" stroke-width="4" stroke-linecap="round"/>
+      <path d="M324 24 H356 A20 20 0 0 1 376 44 V76" fill="none" stroke="${o.color}" stroke-width="4" stroke-linecap="round"/>
+      <path d="M24 324 V356 A20 20 0 0 0 44 376 H76" fill="none" stroke="${o.color}" stroke-width="4" stroke-linecap="round"/>
+      <path d="M324 376 H356 A20 20 0 0 0 376 356 V324" fill="none" stroke="${o.color}" stroke-width="4" stroke-linecap="round"/>
+      ${qrSlot(o)}
+      <text x="200" y="440" text-anchor="middle" fill="${o.color}" font-family="${o.font ?? `ui-sans-serif, system-ui, sans-serif`}" font-size="26" font-weight="600" letter-spacing="4">${escape(o.label)}</text>
+    `),
+};
+
 /** Fine-tuning axes applied on top of any frame's base geometry. */
 export interface FrameTweaks {
   /** Multiplier on every stroke-width (0.5 – 3). */
@@ -618,6 +666,9 @@ export function applyFrameTweaks(svg: string, tweaks?: Partial<FrameTweaks> | nu
 }
 
 export const FRAMES: FrameDef[] = [
+  standardSoftBox,
+  standardCircle,
+  standardMinimalCorners,
   standardHairline,
   standardBracket,
   beautyOrganic,
