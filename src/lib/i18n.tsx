@@ -84,7 +84,7 @@ export function I18nProvider({
   children: ReactNode;
   initialLocale?: Locale;
 }) {
-  const [locale, setLocaleState] = useState<Locale>(initialLocale ?? "nl");
+  const [locale, setLocaleState] = useState<Locale>(initialLocale ?? "en");
 
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l);
@@ -127,7 +127,7 @@ export function useI18n(): I18nValue {
   if (ctx) return ctx;
   // Safe fallback so components stay usable outside the provider.
   return {
-    locale: (i18next.language as Locale) ?? "nl",
+    locale: (i18next.language as Locale) ?? "en",
     setLocale: () => {},
     t: (k, params) => i18next.t(k, params ?? {}) as string,
   };
