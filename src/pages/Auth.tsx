@@ -159,7 +159,47 @@ export default function Auth() {
     setLoading(false);
     if (error) return toast.error(error.message);
     setSentTo(address);
+    setCode("");
+    setResendIn(30);
   };
+
+  /** Cross-device fallback: the code from the e-mail signs you in right here. */
+  const verifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!sentTo || code.length !== 6) return;
+    setVerifying(true);
+    const { error } = await supabase.auth.verifyOtp({
+      email: sentTo,
+      token: code,
+      type: "email",
+    });
+    setVerifying(false);
+    if (error) {
+      setCode("");
+      return toast.error(
+        error.message.toLowerCase().includes("expired")
+          ? "That code has expired — request a new one."
+          : "That code is not valid. Check the six digits and try again.",
+      );
+    }
+    // The auth listener picks the session up and routes onward.
+    toast.success("Signed in");
+  };
+
+  const resend = async () => {
+    if (!sentTo || resendIn > 0) return;
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOtp({
+      email: sentTo,
+      options: { shouldCreateUser: true, emailRedirectTo: `${window.location.origin}/claim` },
+    });
+    setLoading(false);
+    if (error) return toast.error(error.message);
+    setResendIn(30);
+    toast.success("New code sent.");
+  };
+
+
 
   const signInWithPassword = async (e: React.FormEvent) => {
     e.preventDefault();
