@@ -84,8 +84,19 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [usePassword, setUsePassword] = useState(false);
   const [sentTo, setSentTo] = useState<string | null>(null);
+  const [code, setCode] = useState("");
+  const [verifying, setVerifying] = useState(false);
+  const [resendIn, setResendIn] = useState(0);
   const [loading, setLoading] = useState(false);
   const [needsFirstAdmin, setNeedsFirstAdmin] = useState(false);
+
+  /** Cooldown so an impatient double-tap cannot trip Supabase's rate limit. */
+  useEffect(() => {
+    if (resendIn <= 0) return;
+    const t = setTimeout(() => setResendIn((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [resendIn]);
+
 
   useEffect(() => {
     let active = true;
