@@ -294,13 +294,9 @@ export default function Auth() {
                 title={`Continue with ${tile.label}`}
                 className="flex h-10 items-center justify-center rounded-xl border border-border/50 p-2 text-foreground transition-colors hover:bg-muted/50 disabled:opacity-60"
               >
-                {tile.remote ? (
-                  <MaskedIcon src={tile.remote} className="h-4 w-4" />
-                ) : (
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                    <path d={tile.mark} />
-                  </svg>
-                )}
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d={tile.mark} />
+                </svg>
               </button>
             ))}
           </div>
