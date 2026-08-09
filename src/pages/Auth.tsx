@@ -254,11 +254,40 @@ export default function Auth() {
     }
   };
 
+  /**
+   * Passkey sign-in. The server proves the assertion, then hands back a
+   * single-use token we exchange for a real Supabase session; the auth
+   * listener routes onward, so there is no blank screen in between.
+   */
   const passkey = async () => {
     if (typeof window === "undefined" || !("PublicKeyCredential" in window)) {
       return toast.error("This device or browser does not support passkeys.");
     }
-    toast.info("Passkeys are rolling out — continue with your e-mail for now.");
+    setLoading(true);
+    try {
+      const { startAuthentication } = await import("@simplewebauthn/browser");
+      const options = await startPasskeyLogin();
+      const assertion = await startAuthentication({ optionsJSON: options as never });
+      const result = await finishPasskeyLogin({ data: { response: assertion } });
+      if (!result.ok) {
+        setLoading(false);
+        return toast.error(result.reason);
+      }
+      const { error } = await supabase.auth.verifyOtp({
+        type: "magiclink",
+        token_hash: result.tokenHash,
+      });
+      if (error) {
+        setLoading(false);
+        return toast.error("Could not start your session — try the e-mail link instead.");
+      }
+      toast.success("Signed in with your passkey");
+    } catch (err) {
+      setLoading(false);
+      const name = (err as { name?: string }).name;
+      if (name === "NotAllowedError" || name === "AbortError") return; // user dismissed
+      toast.error("No passkey was used. Continue with your e-mail instead.");
+    }
   };
 
   const onEmailChange = (value: string) => {
