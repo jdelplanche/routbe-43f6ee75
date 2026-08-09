@@ -10,9 +10,7 @@ import { toast } from "sonner";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { ArrowLeft, Fingerprint, KeyRound, Loader2, Mail, MailCheck, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { MaskedIcon } from "@/components/MaskedIcon";
 import { PasswordField } from "@/components/PasswordField";
-import { BRAND_MARKS } from "@/lib/brand-marks";
 import { getBootstrapState } from "@/lib/bootstrap.functions";
 import { amIAdmin } from "@/lib/admin.functions";
 
