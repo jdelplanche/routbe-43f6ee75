@@ -5,7 +5,7 @@ import Batch from "@/pages/Batch";
 export const Route = createFileRoute("/batch")({
   head: () => ({
     meta: [
-      { title: "Batch QR-codes — ROUT" },
+      { title: "Batch QR codes — ROUT" },
       {
         name: "description",
         content: "Generate hundreds of QR codes at once from a CSV and download them as a ZIP.",
