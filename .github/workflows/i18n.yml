@@ -1,0 +1,13 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - name: i18n parity (NL/EN/FR/DE)
+        run: node scripts/check-i18n.mjs
+      - name: Typecheck
+        run: bunx tsgo --noEmit || bunx tsc --noEmit

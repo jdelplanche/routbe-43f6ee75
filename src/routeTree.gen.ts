@@ -10,33 +10,720 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UsernameRouteImport } from './routes/$username'
+import { Route as AtChar123usernameChar125RouteImport } from './routes/@{$username}'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as ApiRouteImport } from './routes/api'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BatchRouteImport } from './routes/batch'
+import { Route as CardRouteImport } from './routes/card'
+import { Route as ClaimRouteImport } from './routes/claim'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DocsRouteImport } from './routes/docs'
+import { Route as EnRouteImport } from './routes/en'
+import { Route as GoRouteImport } from './routes/go'
+import { Route as HubRouteImport } from './routes/hub'
+import { Route as ManifestoRouteImport } from './routes/manifesto'
+import { Route as NlRouteImport } from './routes/nl'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SelfHostingRouteImport } from './routes/self-hosting'
+import { Route as SovereigntyRouteImport } from './routes/sovereignty'
+import { Route as StudioRouteImport } from './routes/studio'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as DotwellKnownAtprotoDidRouteImport } from './routes/[.]well-known.atproto-did'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDomainsRouteImport } from './routes/_authenticated/domains'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
+import { Route as DevEmailPreviewRouteImport } from './routes/dev/email-preview'
+import { Route as FreeAtChar123usernameChar125RouteImport } from './routes/free.@{$username}'
+import { Route as RUsernameRouteImport } from './routes/r.$username'
+import { Route as StatsTokenRouteImport } from './routes/stats.$token'
+import { Route as UAtChar123usernameChar125RouteImport } from './routes/u.@{$username}'
+import { Route as UChar123usernameChar125RouteImport } from './routes/u.{$username}'
+import { Route as AuthenticatedAdminWebhooksRouteImport } from './routes/_authenticated/admin_.webhooks'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardAccountRouteImport } from './routes/_authenticated/dashboard.account'
+import { Route as AuthenticatedDashboardApiRouteImport } from './routes/_authenticated/dashboard.api'
+import { Route as AuthenticatedDashboardBlueskyRouteImport } from './routes/_authenticated/dashboard.bluesky'
+import { Route as AuthenticatedDashboardDomainsRouteImport } from './routes/_authenticated/dashboard.domains'
+import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_authenticated/dashboard.profile'
+import { Route as AuthenticatedDashboardRoutesRouteImport } from './routes/_authenticated/dashboard.routes'
+import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiPublicOpenapiDotjsonRouteImport } from './routes/api/public/openapi[.]json'
+import { Route as ApiPublicAuthSendEmailRouteImport } from './routes/api/public/auth/send-email'
+import { Route as ApiPublicCronSecurityAuditRouteImport } from './routes/api/public/cron/security-audit'
+import { Route as ApiPublicEmailConfirmForwardRouteImport } from './routes/api/public/email/confirm-forward'
+import { Route as ApiPublicFileSplatRouteImport } from './routes/api/public/file.$'
+import { Route as ApiPublicMcpRunRouteImport } from './routes/api/public/mcp/run'
+import { Route as ApiPublicPaymentsInboundRouteImport } from './routes/api/public/payments/inbound'
+import { Route as ApiPublicQrCreateRouteImport } from './routes/api/public/qr/create'
+import { Route as ApiPublicQrManageRouteImport } from './routes/api/public/qr/manage'
+import { Route as ApiPublicQrStatsRouteImport } from './routes/api/public/qr/stats'
+import { Route as ApiPublicQrUploadRouteImport } from './routes/api/public/qr/upload'
+import { Route as ApiPublicRSlugRouteImport } from './routes/api/public/r.$slug'
+import { Route as ApiPublicVerifyWebhookRouteImport } from './routes/api/public/verify/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsernameRoute = UsernameRouteImport.update({
+  id: '/$username',
+  path: '/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AtChar123usernameChar125Route =
+  AtChar123usernameChar125RouteImport.update({
+    id: '/@{$username}',
+    path: '/@{$username}',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRoute = ApiRouteImport.update({
+  id: '/api',
+  path: '/api',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BatchRoute = BatchRouteImport.update({
+  id: '/batch',
+  path: '/batch',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CardRoute = CardRouteImport.update({
+  id: '/card',
+  path: '/card',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClaimRoute = ClaimRouteImport.update({
+  id: '/claim',
+  path: '/claim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnRoute = EnRouteImport.update({
+  id: '/en',
+  path: '/en',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GoRoute = GoRouteImport.update({
+  id: '/go',
+  path: '/go',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HubRoute = HubRouteImport.update({
+  id: '/hub',
+  path: '/hub',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManifestoRoute = ManifestoRouteImport.update({
+  id: '/manifesto',
+  path: '/manifesto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NlRoute = NlRouteImport.update({
+  id: '/nl',
+  path: '/nl',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SelfHostingRoute = SelfHostingRouteImport.update({
+  id: '/self-hosting',
+  path: '/self-hosting',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SovereigntyRoute = SovereigntyRouteImport.update({
+  id: '/sovereignty',
+  path: '/sovereignty',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudioRoute = StudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DotwellKnownAtprotoDidRoute = DotwellKnownAtprotoDidRouteImport.update({
+  id: '/.well-known/atproto-did',
+  path: '/.well-known/atproto-did',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDomainsRoute = AuthenticatedDomainsRouteImport.update({
+  id: '/domains',
+  path: '/domains',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth_/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevEmailPreviewRoute = DevEmailPreviewRouteImport.update({
+  id: '/dev/email-preview',
+  path: '/dev/email-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FreeAtChar123usernameChar125Route =
+  FreeAtChar123usernameChar125RouteImport.update({
+    id: '/free/@{$username}',
+    path: '/free/@{$username}',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const RUsernameRoute = RUsernameRouteImport.update({
+  id: '/r/$username',
+  path: '/r/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatsTokenRoute = StatsTokenRouteImport.update({
+  id: '/stats/$token',
+  path: '/stats/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UAtChar123usernameChar125Route =
+  UAtChar123usernameChar125RouteImport.update({
+    id: '/u/@{$username}',
+    path: '/u/@{$username}',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const UChar123usernameChar125Route = UChar123usernameChar125RouteImport.update({
+  id: '/u/{$username}',
+  path: '/u/{$username}',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminWebhooksRoute =
+  AuthenticatedAdminWebhooksRouteImport.update({
+    id: '/admin_/webhooks',
+    path: '/admin/webhooks',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAccountRoute =
+  AuthenticatedDashboardAccountRouteImport.update({
+    id: '/account',
+    path: '/account',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardApiRoute =
+  AuthenticatedDashboardApiRouteImport.update({
+    id: '/api',
+    path: '/api',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardBlueskyRoute =
+  AuthenticatedDashboardBlueskyRouteImport.update({
+    id: '/bluesky',
+    path: '/bluesky',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardDomainsRoute =
+  AuthenticatedDashboardDomainsRouteImport.update({
+    id: '/domains',
+    path: '/domains',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardProfileRoute =
+  AuthenticatedDashboardProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardRoutesRoute =
+  AuthenticatedDashboardRoutesRouteImport.update({
+    id: '/routes',
+    path: '/routes',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
+  id: '/public/health',
+  path: '/public/health',
+  getParentRoute: () => ApiRoute,
+} as any)
+const ApiPublicOpenapiDotjsonRoute = ApiPublicOpenapiDotjsonRouteImport.update({
+  id: '/public/openapi.json',
+  path: '/public/openapi.json',
+  getParentRoute: () => ApiRoute,
+} as any)
+const ApiPublicAuthSendEmailRoute = ApiPublicAuthSendEmailRouteImport.update({
+  id: '/public/auth/send-email',
+  path: '/public/auth/send-email',
+  getParentRoute: () => ApiRoute,
+} as any)
+const ApiPublicCronSecurityAuditRoute =
+  ApiPublicCronSecurityAuditRouteImport.update({
+    id: '/public/cron/security-audit',
+    path: '/public/cron/security-audit',
+    getParentRoute: () => ApiRoute,
+  } as any)
+const ApiPublicEmailConfirmForwardRoute =
+  ApiPublicEmailConfirmForwardRouteImport.update({
+    id: '/public/email/confirm-forward',
+    path: '/public/email/confirm-forward',
+    getParentRoute: () => ApiRoute,
+  } as any)
+const ApiPublicFileSplatRoute = ApiPublicFileSplatRouteImport.update({
+  id: '/public/file/$',
+  path: '/public/file/$',
+  getParentRoute: () => ApiRoute,
+} as any)
+const ApiPublicMcpRunRoute = ApiPublicMcpRunRouteImport.update({
+  id: '/public/mcp/run',
+  path: '/public/mcp/run',
+  getParentRoute: () => ApiRoute,
+} as any)
+const ApiPublicPaymentsInboundRoute =
+  ApiPublicPaymentsInboundRouteImport.update({
+    id: '/public/payments/inbound',
+    path: '/public/payments/inbound',
+    getParentRoute: () => ApiRoute,
+  } as any)
+const ApiPublicQrCreateRoute = ApiPublicQrCreateRouteImport.update({
+  id: '/public/qr/create',
+  path: '/public/qr/create',
+  getParentRoute: () => ApiRoute,
+} as any)
+const ApiPublicQrManageRoute = ApiPublicQrManageRouteImport.update({
+  id: '/public/qr/manage',
+  path: '/public/qr/manage',
+  getParentRoute: () => ApiRoute,
+} as any)
+const ApiPublicQrStatsRoute = ApiPublicQrStatsRouteImport.update({
+  id: '/public/qr/stats',
+  path: '/public/qr/stats',
+  getParentRoute: () => ApiRoute,
+} as any)
+const ApiPublicQrUploadRoute = ApiPublicQrUploadRouteImport.update({
+  id: '/public/qr/upload',
+  path: '/public/qr/upload',
+  getParentRoute: () => ApiRoute,
+} as any)
+const ApiPublicRSlugRoute = ApiPublicRSlugRouteImport.update({
+  id: '/public/r/$slug',
+  path: '/public/r/$slug',
+  getParentRoute: () => ApiRoute,
+} as any)
+const ApiPublicVerifyWebhookRoute = ApiPublicVerifyWebhookRouteImport.update({
+  id: '/public/verify/webhook',
+  path: '/public/verify/webhook',
+  getParentRoute: () => ApiRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$username': typeof UsernameRoute
+  '/@{$username}': typeof AtChar123usernameChar125Route
+  '/api': typeof ApiRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/batch': typeof BatchRoute
+  '/card': typeof CardRoute
+  '/claim': typeof ClaimRoute
+  '/contact': typeof ContactRoute
+  '/docs': typeof DocsRoute
+  '/en': typeof EnRoute
+  '/go': typeof GoRoute
+  '/hub': typeof HubRoute
+  '/manifesto': typeof ManifestoRoute
+  '/nl': typeof NlRoute
+  '/privacy': typeof PrivacyRoute
+  '/self-hosting': typeof SelfHostingRoute
+  '/sovereignty': typeof SovereigntyRoute
+  '/studio': typeof StudioRoute
+  '/terms': typeof TermsRoute
+  '/.well-known/atproto-did': typeof DotwellKnownAtprotoDidRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/domains': typeof AuthenticatedDomainsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/auth/callback': typeof AuthCallbackRoute
+  '/dev/email-preview': typeof DevEmailPreviewRoute
+  '/free/@{$username}': typeof FreeAtChar123usernameChar125Route
+  '/r/$username': typeof RUsernameRoute
+  '/stats/$token': typeof StatsTokenRoute
+  '/u/@{$username}': typeof UAtChar123usernameChar125Route
+  '/u/{$username}': typeof UChar123usernameChar125Route
+  '/admin/webhooks': typeof AuthenticatedAdminWebhooksRoute
+  '/dashboard/account': typeof AuthenticatedDashboardAccountRoute
+  '/dashboard/api': typeof AuthenticatedDashboardApiRoute
+  '/dashboard/bluesky': typeof AuthenticatedDashboardBlueskyRoute
+  '/dashboard/domains': typeof AuthenticatedDashboardDomainsRoute
+  '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
+  '/dashboard/routes': typeof AuthenticatedDashboardRoutesRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/openapi.json': typeof ApiPublicOpenapiDotjsonRoute
+  '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/api/public/auth/send-email': typeof ApiPublicAuthSendEmailRoute
+  '/api/public/cron/security-audit': typeof ApiPublicCronSecurityAuditRoute
+  '/api/public/email/confirm-forward': typeof ApiPublicEmailConfirmForwardRoute
+  '/api/public/file/$': typeof ApiPublicFileSplatRoute
+  '/api/public/mcp/run': typeof ApiPublicMcpRunRoute
+  '/api/public/payments/inbound': typeof ApiPublicPaymentsInboundRoute
+  '/api/public/qr/create': typeof ApiPublicQrCreateRoute
+  '/api/public/qr/manage': typeof ApiPublicQrManageRoute
+  '/api/public/qr/stats': typeof ApiPublicQrStatsRoute
+  '/api/public/qr/upload': typeof ApiPublicQrUploadRoute
+  '/api/public/r/$slug': typeof ApiPublicRSlugRoute
+  '/api/public/verify/webhook': typeof ApiPublicVerifyWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$username': typeof UsernameRoute
+  '/@{$username}': typeof AtChar123usernameChar125Route
+  '/api': typeof ApiRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/batch': typeof BatchRoute
+  '/card': typeof CardRoute
+  '/claim': typeof ClaimRoute
+  '/contact': typeof ContactRoute
+  '/docs': typeof DocsRoute
+  '/en': typeof EnRoute
+  '/go': typeof GoRoute
+  '/hub': typeof HubRoute
+  '/manifesto': typeof ManifestoRoute
+  '/nl': typeof NlRoute
+  '/privacy': typeof PrivacyRoute
+  '/self-hosting': typeof SelfHostingRoute
+  '/sovereignty': typeof SovereigntyRoute
+  '/studio': typeof StudioRoute
+  '/terms': typeof TermsRoute
+  '/.well-known/atproto-did': typeof DotwellKnownAtprotoDidRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/domains': typeof AuthenticatedDomainsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/auth/callback': typeof AuthCallbackRoute
+  '/dev/email-preview': typeof DevEmailPreviewRoute
+  '/free/@{$username}': typeof FreeAtChar123usernameChar125Route
+  '/r/$username': typeof RUsernameRoute
+  '/stats/$token': typeof StatsTokenRoute
+  '/u/@{$username}': typeof UAtChar123usernameChar125Route
+  '/u/{$username}': typeof UChar123usernameChar125Route
+  '/admin/webhooks': typeof AuthenticatedAdminWebhooksRoute
+  '/dashboard/account': typeof AuthenticatedDashboardAccountRoute
+  '/dashboard/api': typeof AuthenticatedDashboardApiRoute
+  '/dashboard/bluesky': typeof AuthenticatedDashboardBlueskyRoute
+  '/dashboard/domains': typeof AuthenticatedDashboardDomainsRoute
+  '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
+  '/dashboard/routes': typeof AuthenticatedDashboardRoutesRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/openapi.json': typeof ApiPublicOpenapiDotjsonRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/api/public/auth/send-email': typeof ApiPublicAuthSendEmailRoute
+  '/api/public/cron/security-audit': typeof ApiPublicCronSecurityAuditRoute
+  '/api/public/email/confirm-forward': typeof ApiPublicEmailConfirmForwardRoute
+  '/api/public/file/$': typeof ApiPublicFileSplatRoute
+  '/api/public/mcp/run': typeof ApiPublicMcpRunRoute
+  '/api/public/payments/inbound': typeof ApiPublicPaymentsInboundRoute
+  '/api/public/qr/create': typeof ApiPublicQrCreateRoute
+  '/api/public/qr/manage': typeof ApiPublicQrManageRoute
+  '/api/public/qr/stats': typeof ApiPublicQrStatsRoute
+  '/api/public/qr/upload': typeof ApiPublicQrUploadRoute
+  '/api/public/r/$slug': typeof ApiPublicRSlugRoute
+  '/api/public/verify/webhook': typeof ApiPublicVerifyWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/$username': typeof UsernameRoute
+  '/@{$username}': typeof AtChar123usernameChar125Route
+  '/api': typeof ApiRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/batch': typeof BatchRoute
+  '/card': typeof CardRoute
+  '/claim': typeof ClaimRoute
+  '/contact': typeof ContactRoute
+  '/docs': typeof DocsRoute
+  '/en': typeof EnRoute
+  '/go': typeof GoRoute
+  '/hub': typeof HubRoute
+  '/manifesto': typeof ManifestoRoute
+  '/nl': typeof NlRoute
+  '/privacy': typeof PrivacyRoute
+  '/self-hosting': typeof SelfHostingRoute
+  '/sovereignty': typeof SovereigntyRoute
+  '/studio': typeof StudioRoute
+  '/terms': typeof TermsRoute
+  '/.well-known/atproto-did': typeof DotwellKnownAtprotoDidRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/_authenticated/domains': typeof AuthenticatedDomainsRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/auth_/callback': typeof AuthCallbackRoute
+  '/dev/email-preview': typeof DevEmailPreviewRoute
+  '/free/@{$username}': typeof FreeAtChar123usernameChar125Route
+  '/r/$username': typeof RUsernameRoute
+  '/stats/$token': typeof StatsTokenRoute
+  '/u/@{$username}': typeof UAtChar123usernameChar125Route
+  '/u/{$username}': typeof UChar123usernameChar125Route
+  '/_authenticated/admin_/webhooks': typeof AuthenticatedAdminWebhooksRoute
+  '/_authenticated/dashboard/account': typeof AuthenticatedDashboardAccountRoute
+  '/_authenticated/dashboard/api': typeof AuthenticatedDashboardApiRoute
+  '/_authenticated/dashboard/bluesky': typeof AuthenticatedDashboardBlueskyRoute
+  '/_authenticated/dashboard/domains': typeof AuthenticatedDashboardDomainsRoute
+  '/_authenticated/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
+  '/_authenticated/dashboard/routes': typeof AuthenticatedDashboardRoutesRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/openapi.json': typeof ApiPublicOpenapiDotjsonRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/api/public/auth/send-email': typeof ApiPublicAuthSendEmailRoute
+  '/api/public/cron/security-audit': typeof ApiPublicCronSecurityAuditRoute
+  '/api/public/email/confirm-forward': typeof ApiPublicEmailConfirmForwardRoute
+  '/api/public/file/$': typeof ApiPublicFileSplatRoute
+  '/api/public/mcp/run': typeof ApiPublicMcpRunRoute
+  '/api/public/payments/inbound': typeof ApiPublicPaymentsInboundRoute
+  '/api/public/qr/create': typeof ApiPublicQrCreateRoute
+  '/api/public/qr/manage': typeof ApiPublicQrManageRoute
+  '/api/public/qr/stats': typeof ApiPublicQrStatsRoute
+  '/api/public/qr/upload': typeof ApiPublicQrUploadRoute
+  '/api/public/r/$slug': typeof ApiPublicRSlugRoute
+  '/api/public/verify/webhook': typeof ApiPublicVerifyWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/$username'
+    | '/@{$username}'
+    | '/api'
+    | '/auth'
+    | '/batch'
+    | '/card'
+    | '/claim'
+    | '/contact'
+    | '/docs'
+    | '/en'
+    | '/go'
+    | '/hub'
+    | '/manifesto'
+    | '/nl'
+    | '/privacy'
+    | '/self-hosting'
+    | '/sovereignty'
+    | '/studio'
+    | '/terms'
+    | '/.well-known/atproto-did'
+    | '/admin'
+    | '/dashboard'
+    | '/domains'
+    | '/settings'
+    | '/auth/callback'
+    | '/dev/email-preview'
+    | '/free/@{$username}'
+    | '/r/$username'
+    | '/stats/$token'
+    | '/u/@{$username}'
+    | '/u/{$username}'
+    | '/admin/webhooks'
+    | '/dashboard/account'
+    | '/dashboard/api'
+    | '/dashboard/bluesky'
+    | '/dashboard/domains'
+    | '/dashboard/profile'
+    | '/dashboard/routes'
+    | '/api/public/health'
+    | '/api/public/openapi.json'
+    | '/dashboard/'
+    | '/api/public/auth/send-email'
+    | '/api/public/cron/security-audit'
+    | '/api/public/email/confirm-forward'
+    | '/api/public/file/$'
+    | '/api/public/mcp/run'
+    | '/api/public/payments/inbound'
+    | '/api/public/qr/create'
+    | '/api/public/qr/manage'
+    | '/api/public/qr/stats'
+    | '/api/public/qr/upload'
+    | '/api/public/r/$slug'
+    | '/api/public/verify/webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/$username'
+    | '/@{$username}'
+    | '/api'
+    | '/auth'
+    | '/batch'
+    | '/card'
+    | '/claim'
+    | '/contact'
+    | '/docs'
+    | '/en'
+    | '/go'
+    | '/hub'
+    | '/manifesto'
+    | '/nl'
+    | '/privacy'
+    | '/self-hosting'
+    | '/sovereignty'
+    | '/studio'
+    | '/terms'
+    | '/.well-known/atproto-did'
+    | '/admin'
+    | '/domains'
+    | '/settings'
+    | '/auth/callback'
+    | '/dev/email-preview'
+    | '/free/@{$username}'
+    | '/r/$username'
+    | '/stats/$token'
+    | '/u/@{$username}'
+    | '/u/{$username}'
+    | '/admin/webhooks'
+    | '/dashboard/account'
+    | '/dashboard/api'
+    | '/dashboard/bluesky'
+    | '/dashboard/domains'
+    | '/dashboard/profile'
+    | '/dashboard/routes'
+    | '/api/public/health'
+    | '/api/public/openapi.json'
+    | '/dashboard'
+    | '/api/public/auth/send-email'
+    | '/api/public/cron/security-audit'
+    | '/api/public/email/confirm-forward'
+    | '/api/public/file/$'
+    | '/api/public/mcp/run'
+    | '/api/public/payments/inbound'
+    | '/api/public/qr/create'
+    | '/api/public/qr/manage'
+    | '/api/public/qr/stats'
+    | '/api/public/qr/upload'
+    | '/api/public/r/$slug'
+    | '/api/public/verify/webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/$username'
+    | '/@{$username}'
+    | '/api'
+    | '/auth'
+    | '/batch'
+    | '/card'
+    | '/claim'
+    | '/contact'
+    | '/docs'
+    | '/en'
+    | '/go'
+    | '/hub'
+    | '/manifesto'
+    | '/nl'
+    | '/privacy'
+    | '/self-hosting'
+    | '/sovereignty'
+    | '/studio'
+    | '/terms'
+    | '/.well-known/atproto-did'
+    | '/_authenticated/admin'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/domains'
+    | '/_authenticated/settings'
+    | '/auth_/callback'
+    | '/dev/email-preview'
+    | '/free/@{$username}'
+    | '/r/$username'
+    | '/stats/$token'
+    | '/u/@{$username}'
+    | '/u/{$username}'
+    | '/_authenticated/admin_/webhooks'
+    | '/_authenticated/dashboard/account'
+    | '/_authenticated/dashboard/api'
+    | '/_authenticated/dashboard/bluesky'
+    | '/_authenticated/dashboard/domains'
+    | '/_authenticated/dashboard/profile'
+    | '/_authenticated/dashboard/routes'
+    | '/api/public/health'
+    | '/api/public/openapi.json'
+    | '/_authenticated/dashboard/'
+    | '/api/public/auth/send-email'
+    | '/api/public/cron/security-audit'
+    | '/api/public/email/confirm-forward'
+    | '/api/public/file/$'
+    | '/api/public/mcp/run'
+    | '/api/public/payments/inbound'
+    | '/api/public/qr/create'
+    | '/api/public/qr/manage'
+    | '/api/public/qr/stats'
+    | '/api/public/qr/upload'
+    | '/api/public/r/$slug'
+    | '/api/public/verify/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  UsernameRoute: typeof UsernameRoute
+  AtChar123usernameChar125Route: typeof AtChar123usernameChar125Route
+  ApiRoute: typeof ApiRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  BatchRoute: typeof BatchRoute
+  CardRoute: typeof CardRoute
+  ClaimRoute: typeof ClaimRoute
+  ContactRoute: typeof ContactRoute
+  DocsRoute: typeof DocsRoute
+  EnRoute: typeof EnRoute
+  GoRoute: typeof GoRoute
+  HubRoute: typeof HubRoute
+  ManifestoRoute: typeof ManifestoRoute
+  NlRoute: typeof NlRoute
+  PrivacyRoute: typeof PrivacyRoute
+  SelfHostingRoute: typeof SelfHostingRoute
+  SovereigntyRoute: typeof SovereigntyRoute
+  StudioRoute: typeof StudioRoute
+  TermsRoute: typeof TermsRoute
+  DotwellKnownAtprotoDidRoute: typeof DotwellKnownAtprotoDidRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
+  DevEmailPreviewRoute: typeof DevEmailPreviewRoute
+  FreeAtChar123usernameChar125Route: typeof FreeAtChar123usernameChar125Route
+  RUsernameRoute: typeof RUsernameRoute
+  StatsTokenRoute: typeof StatsTokenRoute
+  UAtChar123usernameChar125Route: typeof UAtChar123usernameChar125Route
+  UChar123usernameChar125Route: typeof UChar123usernameChar125Route
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +735,498 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$username': {
+      id: '/$username'
+      path: '/$username'
+      fullPath: '/$username'
+      preLoaderRoute: typeof UsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/@{$username}': {
+      id: '/@{$username}'
+      path: '/@{$username}'
+      fullPath: '/@{$username}'
+      preLoaderRoute: typeof AtChar123usernameChar125RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api': {
+      id: '/api'
+      path: '/api'
+      fullPath: '/api'
+      preLoaderRoute: typeof ApiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/batch': {
+      id: '/batch'
+      path: '/batch'
+      fullPath: '/batch'
+      preLoaderRoute: typeof BatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/card': {
+      id: '/card'
+      path: '/card'
+      fullPath: '/card'
+      preLoaderRoute: typeof CardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/claim': {
+      id: '/claim'
+      path: '/claim'
+      fullPath: '/claim'
+      preLoaderRoute: typeof ClaimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en': {
+      id: '/en'
+      path: '/en'
+      fullPath: '/en'
+      preLoaderRoute: typeof EnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/go': {
+      id: '/go'
+      path: '/go'
+      fullPath: '/go'
+      preLoaderRoute: typeof GoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hub': {
+      id: '/hub'
+      path: '/hub'
+      fullPath: '/hub'
+      preLoaderRoute: typeof HubRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manifesto': {
+      id: '/manifesto'
+      path: '/manifesto'
+      fullPath: '/manifesto'
+      preLoaderRoute: typeof ManifestoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nl': {
+      id: '/nl'
+      path: '/nl'
+      fullPath: '/nl'
+      preLoaderRoute: typeof NlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/self-hosting': {
+      id: '/self-hosting'
+      path: '/self-hosting'
+      fullPath: '/self-hosting'
+      preLoaderRoute: typeof SelfHostingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sovereignty': {
+      id: '/sovereignty'
+      path: '/sovereignty'
+      fullPath: '/sovereignty'
+      preLoaderRoute: typeof SovereigntyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/studio': {
+      id: '/studio'
+      path: '/studio'
+      fullPath: '/studio'
+      preLoaderRoute: typeof StudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.well-known/atproto-did': {
+      id: '/.well-known/atproto-did'
+      path: '/.well-known/atproto-did'
+      fullPath: '/.well-known/atproto-did'
+      preLoaderRoute: typeof DotwellKnownAtprotoDidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/domains': {
+      id: '/_authenticated/domains'
+      path: '/domains'
+      fullPath: '/domains'
+      preLoaderRoute: typeof AuthenticatedDomainsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/auth_/callback': {
+      id: '/auth_/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dev/email-preview': {
+      id: '/dev/email-preview'
+      path: '/dev/email-preview'
+      fullPath: '/dev/email-preview'
+      preLoaderRoute: typeof DevEmailPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/free/@{$username}': {
+      id: '/free/@{$username}'
+      path: '/free/@{$username}'
+      fullPath: '/free/@{$username}'
+      preLoaderRoute: typeof FreeAtChar123usernameChar125RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/r/$username': {
+      id: '/r/$username'
+      path: '/r/$username'
+      fullPath: '/r/$username'
+      preLoaderRoute: typeof RUsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stats/$token': {
+      id: '/stats/$token'
+      path: '/stats/$token'
+      fullPath: '/stats/$token'
+      preLoaderRoute: typeof StatsTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/u/@{$username}': {
+      id: '/u/@{$username}'
+      path: '/u/@{$username}'
+      fullPath: '/u/@{$username}'
+      preLoaderRoute: typeof UAtChar123usernameChar125RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/u/{$username}': {
+      id: '/u/{$username}'
+      path: '/u/{$username}'
+      fullPath: '/u/{$username}'
+      preLoaderRoute: typeof UChar123usernameChar125RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin_/webhooks': {
+      id: '/_authenticated/admin_/webhooks'
+      path: '/admin/webhooks'
+      fullPath: '/admin/webhooks'
+      preLoaderRoute: typeof AuthenticatedAdminWebhooksRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/account': {
+      id: '/_authenticated/dashboard/account'
+      path: '/account'
+      fullPath: '/dashboard/account'
+      preLoaderRoute: typeof AuthenticatedDashboardAccountRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/api': {
+      id: '/_authenticated/dashboard/api'
+      path: '/api'
+      fullPath: '/dashboard/api'
+      preLoaderRoute: typeof AuthenticatedDashboardApiRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/bluesky': {
+      id: '/_authenticated/dashboard/bluesky'
+      path: '/bluesky'
+      fullPath: '/dashboard/bluesky'
+      preLoaderRoute: typeof AuthenticatedDashboardBlueskyRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/domains': {
+      id: '/_authenticated/dashboard/domains'
+      path: '/domains'
+      fullPath: '/dashboard/domains'
+      preLoaderRoute: typeof AuthenticatedDashboardDomainsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/profile': {
+      id: '/_authenticated/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof AuthenticatedDashboardProfileRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/routes': {
+      id: '/_authenticated/dashboard/routes'
+      path: '/routes'
+      fullPath: '/dashboard/routes'
+      preLoaderRoute: typeof AuthenticatedDashboardRoutesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/api/public/health': {
+      id: '/api/public/health'
+      path: '/public/health'
+      fullPath: '/api/public/health'
+      preLoaderRoute: typeof ApiPublicHealthRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/openapi.json': {
+      id: '/api/public/openapi.json'
+      path: '/public/openapi.json'
+      fullPath: '/api/public/openapi.json'
+      preLoaderRoute: typeof ApiPublicOpenapiDotjsonRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/auth/send-email': {
+      id: '/api/public/auth/send-email'
+      path: '/public/auth/send-email'
+      fullPath: '/api/public/auth/send-email'
+      preLoaderRoute: typeof ApiPublicAuthSendEmailRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/cron/security-audit': {
+      id: '/api/public/cron/security-audit'
+      path: '/public/cron/security-audit'
+      fullPath: '/api/public/cron/security-audit'
+      preLoaderRoute: typeof ApiPublicCronSecurityAuditRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/email/confirm-forward': {
+      id: '/api/public/email/confirm-forward'
+      path: '/public/email/confirm-forward'
+      fullPath: '/api/public/email/confirm-forward'
+      preLoaderRoute: typeof ApiPublicEmailConfirmForwardRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/file/$': {
+      id: '/api/public/file/$'
+      path: '/public/file/$'
+      fullPath: '/api/public/file/$'
+      preLoaderRoute: typeof ApiPublicFileSplatRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/mcp/run': {
+      id: '/api/public/mcp/run'
+      path: '/public/mcp/run'
+      fullPath: '/api/public/mcp/run'
+      preLoaderRoute: typeof ApiPublicMcpRunRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/payments/inbound': {
+      id: '/api/public/payments/inbound'
+      path: '/public/payments/inbound'
+      fullPath: '/api/public/payments/inbound'
+      preLoaderRoute: typeof ApiPublicPaymentsInboundRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/qr/create': {
+      id: '/api/public/qr/create'
+      path: '/public/qr/create'
+      fullPath: '/api/public/qr/create'
+      preLoaderRoute: typeof ApiPublicQrCreateRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/qr/manage': {
+      id: '/api/public/qr/manage'
+      path: '/public/qr/manage'
+      fullPath: '/api/public/qr/manage'
+      preLoaderRoute: typeof ApiPublicQrManageRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/qr/stats': {
+      id: '/api/public/qr/stats'
+      path: '/public/qr/stats'
+      fullPath: '/api/public/qr/stats'
+      preLoaderRoute: typeof ApiPublicQrStatsRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/qr/upload': {
+      id: '/api/public/qr/upload'
+      path: '/public/qr/upload'
+      fullPath: '/api/public/qr/upload'
+      preLoaderRoute: typeof ApiPublicQrUploadRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/r/$slug': {
+      id: '/api/public/r/$slug'
+      path: '/public/r/$slug'
+      fullPath: '/api/public/r/$slug'
+      preLoaderRoute: typeof ApiPublicRSlugRouteImport
+      parentRoute: typeof ApiRoute
+    }
+    '/api/public/verify/webhook': {
+      id: '/api/public/verify/webhook'
+      path: '/public/verify/webhook'
+      fullPath: '/api/public/verify/webhook'
+      preLoaderRoute: typeof ApiPublicVerifyWebhookRouteImport
+      parentRoute: typeof ApiRoute
+    }
   }
 }
 
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardAccountRoute: typeof AuthenticatedDashboardAccountRoute
+  AuthenticatedDashboardApiRoute: typeof AuthenticatedDashboardApiRoute
+  AuthenticatedDashboardBlueskyRoute: typeof AuthenticatedDashboardBlueskyRoute
+  AuthenticatedDashboardDomainsRoute: typeof AuthenticatedDashboardDomainsRoute
+  AuthenticatedDashboardProfileRoute: typeof AuthenticatedDashboardProfileRoute
+  AuthenticatedDashboardRoutesRoute: typeof AuthenticatedDashboardRoutesRoute
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+}
+
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardAccountRoute: AuthenticatedDashboardAccountRoute,
+    AuthenticatedDashboardApiRoute: AuthenticatedDashboardApiRoute,
+    AuthenticatedDashboardBlueskyRoute: AuthenticatedDashboardBlueskyRoute,
+    AuthenticatedDashboardDomainsRoute: AuthenticatedDashboardDomainsRoute,
+    AuthenticatedDashboardProfileRoute: AuthenticatedDashboardProfileRoute,
+    AuthenticatedDashboardRoutesRoute: AuthenticatedDashboardRoutesRoute,
+    AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  }
+
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+  AuthenticatedDomainsRoute: typeof AuthenticatedDomainsRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedAdminWebhooksRoute: typeof AuthenticatedAdminWebhooksRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+  AuthenticatedDomainsRoute: AuthenticatedDomainsRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedAdminWebhooksRoute: AuthenticatedAdminWebhooksRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+interface ApiRouteChildren {
+  ApiPublicHealthRoute: typeof ApiPublicHealthRoute
+  ApiPublicOpenapiDotjsonRoute: typeof ApiPublicOpenapiDotjsonRoute
+  ApiPublicAuthSendEmailRoute: typeof ApiPublicAuthSendEmailRoute
+  ApiPublicCronSecurityAuditRoute: typeof ApiPublicCronSecurityAuditRoute
+  ApiPublicEmailConfirmForwardRoute: typeof ApiPublicEmailConfirmForwardRoute
+  ApiPublicFileSplatRoute: typeof ApiPublicFileSplatRoute
+  ApiPublicMcpRunRoute: typeof ApiPublicMcpRunRoute
+  ApiPublicPaymentsInboundRoute: typeof ApiPublicPaymentsInboundRoute
+  ApiPublicQrCreateRoute: typeof ApiPublicQrCreateRoute
+  ApiPublicQrManageRoute: typeof ApiPublicQrManageRoute
+  ApiPublicQrStatsRoute: typeof ApiPublicQrStatsRoute
+  ApiPublicQrUploadRoute: typeof ApiPublicQrUploadRoute
+  ApiPublicRSlugRoute: typeof ApiPublicRSlugRoute
+  ApiPublicVerifyWebhookRoute: typeof ApiPublicVerifyWebhookRoute
+}
+
+const ApiRouteChildren: ApiRouteChildren = {
+  ApiPublicHealthRoute: ApiPublicHealthRoute,
+  ApiPublicOpenapiDotjsonRoute: ApiPublicOpenapiDotjsonRoute,
+  ApiPublicAuthSendEmailRoute: ApiPublicAuthSendEmailRoute,
+  ApiPublicCronSecurityAuditRoute: ApiPublicCronSecurityAuditRoute,
+  ApiPublicEmailConfirmForwardRoute: ApiPublicEmailConfirmForwardRoute,
+  ApiPublicFileSplatRoute: ApiPublicFileSplatRoute,
+  ApiPublicMcpRunRoute: ApiPublicMcpRunRoute,
+  ApiPublicPaymentsInboundRoute: ApiPublicPaymentsInboundRoute,
+  ApiPublicQrCreateRoute: ApiPublicQrCreateRoute,
+  ApiPublicQrManageRoute: ApiPublicQrManageRoute,
+  ApiPublicQrStatsRoute: ApiPublicQrStatsRoute,
+  ApiPublicQrUploadRoute: ApiPublicQrUploadRoute,
+  ApiPublicRSlugRoute: ApiPublicRSlugRoute,
+  ApiPublicVerifyWebhookRoute: ApiPublicVerifyWebhookRoute,
+}
+
+const ApiRouteWithChildren = ApiRoute._addFileChildren(ApiRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  UsernameRoute: UsernameRoute,
+  AtChar123usernameChar125Route: AtChar123usernameChar125Route,
+  ApiRoute: ApiRouteWithChildren,
+  AuthRoute: AuthRoute,
+  BatchRoute: BatchRoute,
+  CardRoute: CardRoute,
+  ClaimRoute: ClaimRoute,
+  ContactRoute: ContactRoute,
+  DocsRoute: DocsRoute,
+  EnRoute: EnRoute,
+  GoRoute: GoRoute,
+  HubRoute: HubRoute,
+  ManifestoRoute: ManifestoRoute,
+  NlRoute: NlRoute,
+  PrivacyRoute: PrivacyRoute,
+  SelfHostingRoute: SelfHostingRoute,
+  SovereigntyRoute: SovereigntyRoute,
+  StudioRoute: StudioRoute,
+  TermsRoute: TermsRoute,
+  DotwellKnownAtprotoDidRoute: DotwellKnownAtprotoDidRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
+  DevEmailPreviewRoute: DevEmailPreviewRoute,
+  FreeAtChar123usernameChar125Route: FreeAtChar123usernameChar125Route,
+  RUsernameRoute: RUsernameRoute,
+  StatsTokenRoute: StatsTokenRoute,
+  UAtChar123usernameChar125Route: UAtChar123usernameChar125Route,
+  UChar123usernameChar125Route: UChar123usernameChar125Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
