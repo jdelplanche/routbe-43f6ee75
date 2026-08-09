@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import { AppLayout } from "@/components/layout/AppLayout";
@@ -25,6 +26,8 @@ export const Route = createFileRoute("/self-hosting")({
     ],
     links: [canonicalLink("/self-hosting")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: SelfHosting,
 });
 

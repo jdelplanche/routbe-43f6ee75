@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import DeveloperHub from "@/pages/DeveloperHub";
@@ -20,5 +21,7 @@ export const Route = createFileRoute("/api")({
     ],
     links: [canonicalLink("/api")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: DeveloperHub,
 });

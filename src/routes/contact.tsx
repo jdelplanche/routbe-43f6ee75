@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import Contact from "@/pages/Contact";
@@ -23,5 +24,7 @@ export const Route = createFileRoute("/contact")({
     ],
     links: [canonicalLink("/contact")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Contact,
 });

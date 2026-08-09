@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import { Link } from "@/lib/router-compat";
@@ -29,6 +30,8 @@ export const Route = createFileRoute("/privacy")({
     ],
     links: [canonicalLink("/privacy")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: PrivacyPage,
 });
 

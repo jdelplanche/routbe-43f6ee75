@@ -1,4 +1,5 @@
 import { noindexMeta } from "@/lib/site";
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import { SubdomainPanel } from "@/components/dashboard/SubdomainPanel";
 import { BlueskyWizard } from "@/components/dashboard/BlueskyWizard";
@@ -24,6 +25,8 @@ export const Route = createFileRoute("/_authenticated/dashboard/bluesky")({
       noindexMeta,
     ],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: BlueskyPage,
 });
 

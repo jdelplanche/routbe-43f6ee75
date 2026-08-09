@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { ProfileMissing, ProfileView } from "@/components/profile/ProfileView";
@@ -20,6 +21,8 @@ export const Route = createFileRoute("/u/@{$username}")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: FreeProfile,
 });
 

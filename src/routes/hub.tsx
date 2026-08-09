@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import {
@@ -54,6 +55,8 @@ export const Route = createFileRoute("/hub")({
     ],
     links: [canonicalLink("/hub")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: HubPage,
 });
 

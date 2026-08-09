@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import { useEffect, useState } from "react";
@@ -32,6 +33,8 @@ export const Route = createFileRoute("/go")({
     ],
     links: [canonicalLink("/go")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: GoPage,
 });
 

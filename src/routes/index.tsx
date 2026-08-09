@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import Index from "@/pages/Index";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
@@ -24,5 +25,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [canonicalLink("/")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Index,
 });

@@ -1,4 +1,5 @@
 import { noindexMeta } from "@/lib/site";
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import ProfileSettings from "@/pages/ProfileSettings";
 
@@ -20,5 +21,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/profile")({
       noindexMeta,
     ],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: ProfileSettings,
 });

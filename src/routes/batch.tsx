@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import Batch from "@/pages/Batch";
@@ -22,5 +23,7 @@ export const Route = createFileRoute("/batch")({
     ],
     links: [canonicalLink("/batch")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Batch,
 });

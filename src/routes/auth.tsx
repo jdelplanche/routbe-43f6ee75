@@ -1,4 +1,5 @@
 import { canonicalLink, canonicalMeta } from "@/lib/site";
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import Auth from "@/pages/Auth";
 
@@ -32,5 +33,7 @@ export const Route = createFileRoute("/auth")({
     ],
     links: [canonicalLink("/auth")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Auth,
 });

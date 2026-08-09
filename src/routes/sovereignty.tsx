@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import { LegalPage } from "@/components/LegalPage";
@@ -28,6 +29,8 @@ export const Route = createFileRoute("/sovereignty")({
     ],
     links: [canonicalLink("/sovereignty")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: SovereigntyPage,
 });
 

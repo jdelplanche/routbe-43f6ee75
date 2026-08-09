@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import Stats from "@/pages/Stats";
 
@@ -17,5 +18,7 @@ export const Route = createFileRoute("/stats/$token")({
       { name: "robots", content: "noindex" },
     ],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Stats,
 });

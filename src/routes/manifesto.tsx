@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import Manifesto from "@/pages/Manifesto";
@@ -20,5 +21,7 @@ export const Route = createFileRoute("/manifesto")({
     ],
     links: [canonicalLink("/manifesto")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Manifesto,
 });

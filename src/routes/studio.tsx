@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import Studio from "@/pages/Studio";
@@ -20,5 +21,7 @@ export const Route = createFileRoute("/studio")({
     ],
     links: [canonicalLink("/studio")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Studio,
 });
