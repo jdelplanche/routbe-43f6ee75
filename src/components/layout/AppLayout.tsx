@@ -4,6 +4,8 @@ import { Link } from "@/lib/router-compat";
 import { RoutLogo } from "@/components/RoutLogo";
 import { Footer } from "@/components/Footer";
 import { BackToTop } from "@/components/BackToTop";
+import { NameOnboardingDialog } from "@/components/onboarding/NameOnboardingDialog";
+
 import { ProfileMenu } from "@/components/ProfileMenu";
 import { MobileMenu } from "@/components/MobileMenu";
 import { LanguageToggle } from "@/components/LanguageToggle";
