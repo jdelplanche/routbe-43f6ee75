@@ -1,3 +1,4 @@
+import { noindexMeta } from "@/lib/site";
 import { createFileRoute } from "@tanstack/react-router";
 import { SubdomainPanel } from "@/components/dashboard/SubdomainPanel";
 import { BlueskyWizard } from "@/components/dashboard/BlueskyWizard";
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/bluesky")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      noindexMeta,
     ],
   }),
   component: BlueskyPage,

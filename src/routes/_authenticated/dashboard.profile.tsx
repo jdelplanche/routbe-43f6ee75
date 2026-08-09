@@ -1,3 +1,4 @@
+import { noindexMeta } from "@/lib/site";
 import { createFileRoute } from "@tanstack/react-router";
 import ProfileSettings from "@/pages/ProfileSettings";
 
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/profile")({
       },
       { property: "og:type", content: "profile" },
       { name: "twitter:card", content: "summary" },
+      noindexMeta,
     ],
   }),
   component: ProfileSettings,

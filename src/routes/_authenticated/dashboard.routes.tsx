@@ -1,3 +1,4 @@
+import { noindexMeta } from "@/lib/site";
 import { createFileRoute } from "@tanstack/react-router";
 import RoutesManager from "@/pages/RoutesManager";
 
@@ -17,6 +18,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/routes")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      noindexMeta,
     ],
   }),
   component: RoutesManager,
