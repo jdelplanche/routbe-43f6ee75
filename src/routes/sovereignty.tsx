@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import { LegalPage } from "@/components/LegalPage";
 import { LegalChips, type LegalChip } from "@/components/LegalChips";
 import { LegalActionBar } from "@/components/LegalActionBar";
@@ -24,7 +24,9 @@ export const Route = createFileRoute("/sovereignty")({
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
       ...socialImageMeta,
+      canonicalMeta("/sovereignty"),
     ],
+    links: [canonicalLink("/sovereignty")],
   }),
   component: SovereigntyPage,
 });

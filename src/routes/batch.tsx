@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import Batch from "@/pages/Batch";
 
 export const Route = createFileRoute("/batch")({
@@ -16,7 +16,11 @@ export const Route = createFileRoute("/batch")({
         content: "Generate hundreds of QR codes at once from a CSV.",
       },
       ...socialImageMeta,
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      canonicalMeta("/batch"),
     ],
+    links: [canonicalLink("/batch")],
   }),
   component: Batch,
 });

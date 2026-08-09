@@ -1,3 +1,4 @@
+import { canonicalLink, canonicalMeta } from "@/lib/site";
 import { createFileRoute } from "@tanstack/react-router";
 import Auth from "@/pages/Auth";
 
@@ -25,7 +26,11 @@ export const Route = createFileRoute("/auth")({
         property: "og:description",
         content: "Sign in or create a ROUT account to save your QR codes.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      canonicalMeta("/auth"),
     ],
+    links: [canonicalLink("/auth")],
   }),
   component: Auth,
 });

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import { Link } from "@/lib/router-compat";
 import { cn } from "@/lib/utils";
 import { LegalActionBar } from "@/components/LegalActionBar";
@@ -25,7 +25,9 @@ export const Route = createFileRoute("/privacy")({
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
       ...socialImageMeta,
+      canonicalMeta("/privacy"),
     ],
+    links: [canonicalLink("/privacy")],
   }),
   component: PrivacyPage,
 });

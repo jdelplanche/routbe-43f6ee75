@@ -1,5 +1,5 @@
 import { createFileRoute, useSearch } from "@tanstack/react-router";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { RoutLogo } from "@/components/RoutLogo";
@@ -37,7 +37,9 @@ export const Route = createFileRoute("/card")({
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
       ...socialImageMeta,
+      canonicalMeta("/card"),
     ],
+    links: [canonicalLink("/card")],
   }),
   component: CardPage,
 });

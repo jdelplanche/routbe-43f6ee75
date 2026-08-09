@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import { useEffect } from "react";
 import Index from "@/pages/Index";
 import { useI18n } from "@/lib/i18n";
@@ -19,7 +19,11 @@ export const Route = createFileRoute("/en")({
         content: "Print-ready QR codes with custom colours, shapes, logo and scan analytics.",
       },
       ...socialImageMeta,
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      canonicalMeta("/en"),
     ],
+    links: [canonicalLink("/en")],
   }),
   component: EnPage,
 });

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { CodeBlock } from "@/components/CodeBlock";
 import { useI18n } from "@/lib/i18n";
@@ -21,7 +21,9 @@ export const Route = createFileRoute("/self-hosting")({
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
       ...socialImageMeta,
+      canonicalMeta("/self-hosting"),
     ],
+    links: [canonicalLink("/self-hosting")],
   }),
   component: SelfHosting,
 });
