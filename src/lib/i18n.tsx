@@ -34,11 +34,12 @@ function isLocale(value: unknown): value is Locale {
 
 /**
  * Language resolution order: explicit choice in localStorage, then the browser
- * language (Dutch/Flemish wins for `nl`), then English. URLs stay clean — the
- * locale never appears as a path prefix.
+ * or system language (Dutch/Flemish wins for `nl`), then English as the
+ * international default. URLs stay clean — the locale never appears as a path
+ * prefix, and the header switcher always allows a manual override.
  */
 export function detectLocale(): Locale {
-  if (typeof window === "undefined") return "nl";
+  if (typeof window === "undefined") return "en";
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (isLocale(stored)) return stored;
@@ -59,7 +60,7 @@ export function detectLocale(): Locale {
 if (!i18next.isInitialized) {
   void i18next.init({
     resources: RESOURCES,
-    lng: "nl",
+    lng: "en",
     fallbackLng: "en",
     interpolation: { escapeValue: false },
     returnNull: false,
@@ -83,7 +84,7 @@ export function I18nProvider({
   children: ReactNode;
   initialLocale?: Locale;
 }) {
-  const [locale, setLocaleState] = useState<Locale>(initialLocale ?? "nl");
+  const [locale, setLocaleState] = useState<Locale>(initialLocale ?? "en");
 
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l);
@@ -126,7 +127,7 @@ export function useI18n(): I18nValue {
   if (ctx) return ctx;
   // Safe fallback so components stay usable outside the provider.
   return {
-    locale: (i18next.language as Locale) ?? "nl",
+    locale: (i18next.language as Locale) ?? "en",
     setLocale: () => {},
     t: (k, params) => i18next.t(k, params ?? {}) as string,
   };

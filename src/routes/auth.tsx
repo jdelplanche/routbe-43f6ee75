@@ -15,15 +15,15 @@ export const Route = createFileRoute("/auth")({
 
   head: () => ({
     meta: [
-      { title: "Inloggen — ROUT" },
+      { title: "Sign in — ROUT" },
       {
         name: "description",
-        content: "Log in of maak een ROUT-account om je QR-codes te bewaren en te volgen.",
+        content: "Sign in or create a ROUT account to save and track your QR codes.",
       },
-      { property: "og:title", content: "Inloggen — ROUT" },
+      { property: "og:title", content: "Sign in — ROUT" },
       {
         property: "og:description",
-        content: "Log in of maak een ROUT-account om je QR-codes te bewaren.",
+        content: "Sign in or create a ROUT account to save your QR codes.",
       },
     ],
   }),
