@@ -15,6 +15,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { PasswordField } from "@/components/PasswordField";
 import { getBootstrapState } from "@/lib/bootstrap.functions";
 import { amIAdmin } from "@/lib/admin.functions";
+import { finishPasskeyLogin, startPasskeyLogin } from "@/lib/webauthn.functions";
 
 /** Monochrome provider marks — no single brand is allowed to dominate. */
 const MARKS: Record<string, string> = {
