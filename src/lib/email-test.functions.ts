@@ -61,11 +61,13 @@ export const SAMPLE_DATA: Record<TestTemplate, Record<string, string>> = {
     Email: "jasper.devries@voorbeeld.be",
   },
   invite: {
+    Token: "482913",
     ConfirmationURL: "https://rout.be/auth/confirm?token=pkce_7a6b5c4d3e2f&type=invite",
     SiteURL: "https://rout.be",
     Email: "nieuwe.gebruiker@voorbeeld.be",
   },
   "email-change": {
+    Token: "482913",
     ConfirmationURL: "https://rout.be/auth/confirm?token=pkce_2e1d0c9b8a7f&type=email_change",
     SiteURL: "https://rout.be",
     Email: "oud@voorbeeld.be",
