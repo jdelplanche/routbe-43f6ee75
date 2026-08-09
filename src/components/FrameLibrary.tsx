@@ -26,8 +26,62 @@ import {
   type FrameTweaks,
 } from "./QRFrames";
 
-/** Ready-made callout labels — the classic conversion boosters. */
-const LABEL_PRESETS = ["SCAN ME", "SCAN TO ORDER", "SCAN FOR MENU", "TAP & SCAN", "MEER INFO"];
+/**
+ * Ready-made callout labels, grouped by use case. Both Dutch and English
+ * wordings are offered because most ROUT codes end up in bilingual venues.
+ */
+const LABEL_GROUPS: { id: string; label: string; items: string[] }[] = [
+  {
+    id: "dining",
+    label: "Dining",
+    items: [
+      "SCAN TO ORDER",
+      "SCAN OM TE BESTELLEN",
+      "SCAN FOR MENU",
+      "SCAN VOOR MENU",
+      "ORDER AT TABLE",
+      "BESTEL AAN TAFEL",
+      "SEE OUR MENU",
+      "BEKIJK ONS MENU",
+      "PAY HERE",
+      "BETAAL HIER",
+      "WIFI & PASSWORD",
+      "WIFI & WACHTWOORD",
+      "WIFI PASSWORD",
+    ],
+  },
+  {
+    id: "cta",
+    label: "Call to action",
+    items: ["SCAN ME", "SCAN MIJ", "TAP & SCAN", "MORE INFO", "MEER INFO", "MORE INFORMATION"],
+  },
+  {
+    id: "social",
+    label: "Social",
+    items: [
+      "FOLLOW US",
+      "VOLG ONS",
+      "OUR WEBSITE",
+      "ONZE WEBSITE",
+      "INSTAGRAM",
+      "FACEBOOK",
+      "LINKEDIN",
+    ],
+  },
+  {
+    id: "business",
+    label: "Business",
+    items: [
+      "OUR LOCATION",
+      "ONZE LOCATIE",
+      "CONTACT",
+      "LEAVE A REVIEW",
+      "LAAT EEN REVIEW ACHTER",
+      "DONATE",
+      "DONEER",
+    ],
+  },
+];
 
 interface FrameLibraryProps {
   selectedFrameId: string | null;
@@ -153,21 +207,30 @@ export function FrameLibrary({
       {selected && (
         <div className="space-y-2 pt-1">
           <Label className="text-sm text-muted-foreground">{t("style.frameText")}</Label>
-          <div className="flex flex-wrap gap-1.5">
-            {LABEL_PRESETS.map((preset) => (
-              <button
-                key={preset}
-                type="button"
-                onClick={() => onFrameLabelChange(preset)}
-                aria-pressed={frameLabel === preset}
-                className={selectionCardClass(
-                  frameLabel === preset,
-                  "h-7 rounded-full px-2.5 text-[11px] font-medium tracking-wide",
-                )}
-              >
-                <SelectionIndicator visible={frameLabel === preset} />
-                {preset}
-              </button>
+          <div className="max-h-44 space-y-2.5 overflow-y-auto rounded-2xl border border-border/70 bg-muted/20 p-2.5">
+            {LABEL_GROUPS.map((group) => (
+              <div key={group.id} className="space-y-1.5">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {group.label}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {group.items.map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => onFrameLabelChange(preset)}
+                      aria-pressed={frameLabel === preset}
+                      className={selectionCardClass(
+                        frameLabel === preset,
+                        "h-7 rounded-full px-2.5 text-[11px] font-medium tracking-wide",
+                      )}
+                    >
+                      <SelectionIndicator visible={frameLabel === preset} />
+                      {preset}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
