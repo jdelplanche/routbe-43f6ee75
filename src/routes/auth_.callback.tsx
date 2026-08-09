@@ -14,10 +14,10 @@ import { amIAdmin } from "@/lib/admin.functions";
 export const Route = createFileRoute("/auth_/callback")({
   head: () => ({
     meta: [
-      { title: "Inloggen — ROUT" },
-      { name: "description", content: "Je aanmelding wordt afgerond." },
-      { property: "og:title", content: "Inloggen — ROUT" },
-      { property: "og:description", content: "Je aanmelding wordt afgerond." },
+      { title: "Signing you in — ROUT" },
+      { name: "description", content: "Finishing your sign-in." },
+      { property: "og:title", content: "Signing you in — ROUT" },
+      { property: "og:description", content: "Finishing your sign-in." },
       { name: "robots", content: "noindex" },
     ],
   }),

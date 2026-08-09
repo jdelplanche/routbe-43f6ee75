@@ -91,13 +91,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "ROUT — QR Code Studio" },
       {
         name: "description",
-        content: "Ontwerp print-klare QR-codes met eigen stijl, frames en scananalytics.",
+        content: "Design print-ready QR codes with custom styling, frames and scan analytics.",
       },
       { name: "author", content: "ROUT" },
       { property: "og:title", content: "ROUT — QR Code Studio" },
       {
         property: "og:description",
-        content: "Ontwerp print-klare QR-codes met eigen stijl, frames en scananalytics.",
+        content: "Design print-ready QR codes with custom styling, frames and scan analytics.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
