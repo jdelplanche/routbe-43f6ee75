@@ -315,21 +315,73 @@ export default function Auth() {
           {sentTo ? (
             <div
               data-testid="auth-link-sent"
-              className="space-y-3 rounded-xl border border-border bg-muted/40 p-4 text-center"
+              className="space-y-4 rounded-xl border border-border bg-muted/40 p-4 text-center"
             >
               <MailCheck className="mx-auto h-6 w-6" aria-hidden />
               <p className="text-sm leading-relaxed">
-                We sent a secure sign-in link to <strong>{sentTo}</strong>. Open your inbox to sign
-                in or activate your account right away.
+                We sent a secure sign-in link and a 6-digit code to <strong>{sentTo}</strong>. Open
+                the link on this device, or type the code below if your mail is on another device.
               </p>
-              <button
-                type="button"
-                onClick={() => setSentTo(null)}
-                className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
-              >
-                Use a different address
-              </button>
+
+              <form onSubmit={verifyCode} className="space-y-3">
+                <Label htmlFor="auth-otp" className="block text-xs font-medium">
+                  Enter your 6-digit code
+                </Label>
+                <div className="flex justify-center">
+                  <InputOTP
+                    id="auth-otp"
+                    maxLength={6}
+                    value={code}
+                    onChange={setCode}
+                    inputMode="numeric"
+                    autoFocus
+                    aria-label="6-digit verification code"
+                  >
+                    <InputOTPGroup>
+                      {[0, 1, 2, 3, 4, 5].map((i) => (
+                        <InputOTPSlot key={i} index={i} />
+                      ))}
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
+                <Button
+                  type="submit"
+                  data-testid="auth-verify-code"
+                  className="h-11 w-full rounded-lg font-medium"
+                  disabled={verifying || code.length !== 6}
+                >
+                  {verifying ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden /> Verifying…
+                    </>
+                  ) : (
+                    "Verify and sign in"
+                  )}
+                </Button>
+              </form>
+
+              <div className="flex items-center justify-center gap-4">
+                <button
+                  type="button"
+                  onClick={resend}
+                  disabled={loading || resendIn > 0}
+                  className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground disabled:no-underline disabled:opacity-60"
+                >
+                  {resendIn > 0 ? `Resend in ${resendIn}s` : "Resend code"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSentTo(null);
+                    setCode("");
+                  }}
+                  className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                >
+                  Use a different address
+                </button>
+              </div>
             </div>
+
           ) : usePassword ? (
             <form onSubmit={signInWithPassword} className="space-y-3.5">
               {emailField}
