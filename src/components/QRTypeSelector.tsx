@@ -250,7 +250,7 @@ export function QRTypeSelector({ selectedType, onTypeChange }: QRTypeSelectorPro
       </div>
 
       {/* Mobile: peeking snap carousel. Desktop: everything wraps into view. */}
-      <div className="-mx-1 mb-3 w-[calc(100%+0.5rem)] max-w-[calc(100%+0.5rem)] min-w-0 snap-x snap-mandatory overflow-x-auto overscroll-x-contain scroll-px-1 [scrollbar-width:none] md:overflow-x-visible [&::-webkit-scrollbar]:hidden">
+      <div className="-mx-1 mb-3 w-[calc(100%+0.5rem)] max-w-[calc(100%+0.5rem)] min-w-0 snap-x snap-mandatory overflow-x-auto edge-fade-x overscroll-x-contain scroll-px-1 [scrollbar-width:none] md:overflow-x-visible [&::-webkit-scrollbar]:hidden">
         <div className="flex w-max min-w-full items-center gap-1.5 px-1 pb-1 md:w-full md:flex-wrap">
           {qrTypeCategories.map(({ id, labelKey, Icon }) => (
             <button

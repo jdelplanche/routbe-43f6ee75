@@ -547,3 +547,15 @@ textarea:focus-visible {
   box-shadow: none;
   border-color: hsl(var(--accent) / 0.5);
 }
+
+/*
+ * Horizontal chip carousels on mobile: fade the trailing edge so a peeking chip
+ * reads as "scroll for more" instead of looking clipped by the viewport.
+ */
+@utility edge-fade-x {
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 1.75rem), transparent 100%);
+
+  @media (width >= 48rem) {
+    mask-image: none;
+  }
+}
