@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,6 +22,8 @@ export const Route = createFileRoute("/auth_/callback")({
       { name: "robots", content: "noindex" },
     ],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: AuthCallback,
 });
 

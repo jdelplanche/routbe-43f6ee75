@@ -1,5 +1,6 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import {
   Globe,
   Linkedin,
@@ -50,8 +51,12 @@ export const Route = createFileRoute("/hub")({
       { property: "og:type", content: "profile" },
       { name: "twitter:card", content: "summary" },
       ...socialImageMeta,
+      canonicalMeta("/hub"),
     ],
+    links: [canonicalLink("/hub")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: HubPage,
 });
 

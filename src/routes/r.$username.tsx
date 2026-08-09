@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute, useParams, useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { storeReferrer } from "@/lib/referral";
@@ -27,6 +28,8 @@ export const Route = createFileRoute("/r/$username")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: ReferralLanding,
 });
 

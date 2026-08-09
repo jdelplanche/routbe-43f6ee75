@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import Admin from "@/pages/Admin";
 
@@ -15,5 +16,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
       { property: "og:description", content: "Internal ROUT admin tools." },
     ],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Admin,
 });

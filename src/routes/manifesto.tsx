@@ -1,5 +1,6 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import Manifesto from "@/pages/Manifesto";
 
 export const Route = createFileRoute("/manifesto")({
@@ -16,7 +17,11 @@ export const Route = createFileRoute("/manifesto")({
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
       ...socialImageMeta,
+      canonicalMeta("/manifesto"),
     ],
+    links: [canonicalLink("/manifesto")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Manifesto,
 });

@@ -44,3 +44,18 @@ export const BRAND_MARK_URLS = {
 
 /** QR type illustrations (absolute, production-hosted). */
 export const qrTypeImageUrl = (name: string) => `${SITE_ORIGIN}/img/${name}`;
+
+/** Self-referencing canonical link for a static route path (`/`, `/claim`, …). */
+export const canonicalLink = (path: string) => ({
+  rel: "canonical",
+  href: `${SITE_ORIGIN}${path === "/" ? "" : path}`,
+});
+
+/** `og:url` meta for a static route path — must self-reference the page. */
+export const canonicalMeta = (path: string) => ({
+  property: "og:url",
+  content: `${SITE_ORIGIN}${path === "/" ? "" : path}`,
+});
+
+/** Keeps private / transient screens out of the index. */
+export const noindexMeta = { name: "robots", content: "noindex,nofollow" };

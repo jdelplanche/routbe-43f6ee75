@@ -1,5 +1,6 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import { useEffect, useState } from "react";
 import { RoutLogo } from "@/components/RoutLogo";
 
@@ -27,8 +28,13 @@ export const Route = createFileRoute("/go")({
       { property: "og:type", content: "website" },
       { name: "robots", content: "noindex" },
       ...socialImageMeta,
+      { name: "twitter:card", content: "summary_large_image" },
+      canonicalMeta("/go"),
     ],
+    links: [canonicalLink("/go")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: GoPage,
 });
 

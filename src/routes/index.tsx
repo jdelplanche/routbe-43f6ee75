@@ -1,6 +1,7 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import Index from "@/pages/Index";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,7 +19,13 @@ export const Route = createFileRoute("/")({
           "Print-ready QR codes with granular styling, frames, IBAN payments and scan analytics.",
       },
       ...socialImageMeta,
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      canonicalMeta("/"),
     ],
+    links: [canonicalLink("/")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Index,
 });

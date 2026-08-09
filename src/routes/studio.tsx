@@ -1,5 +1,6 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
-import { socialImageMeta } from "@/lib/site";
+import { canonicalLink, canonicalMeta, socialImageMeta } from "@/lib/site";
 import Studio from "@/pages/Studio";
 
 export const Route = createFileRoute("/studio")({
@@ -16,7 +17,11 @@ export const Route = createFileRoute("/studio")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       ...socialImageMeta,
+      canonicalMeta("/studio"),
     ],
+    links: [canonicalLink("/studio")],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Studio,
 });

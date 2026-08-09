@@ -1,3 +1,5 @@
+import { noindexMeta } from "@/lib/site";
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import Domains from "@/pages/Domains";
 import { requireFeature } from "@/lib/entitlement-guard";
@@ -16,7 +18,10 @@ export const Route = createFileRoute("/_authenticated/dashboard/domains")({
       { property: "og:description", content: "Brand your dynamic QR links with your own domain." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      noindexMeta,
     ],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: Domains,
 });

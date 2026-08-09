@@ -1,3 +1,4 @@
+import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
 import { createFileRoute } from "@tanstack/react-router";
 import AdminWebhooks from "@/pages/AdminWebhooks";
 
@@ -15,5 +16,7 @@ export const Route = createFileRoute("/_authenticated/admin_/webhooks")({
       { property: "og:description", content: "Internal ROUT webhook monitoring." },
     ],
   }),
+  errorComponent: RouteErrorFallback,
+  pendingComponent: RoutePendingSkeleton,
   component: AdminWebhooks,
 });
