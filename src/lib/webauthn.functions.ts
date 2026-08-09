@@ -32,7 +32,7 @@ export const startPasskeyRegistration = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     const { generateRegistrationOptions } = await import("@simplewebauthn/server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { passkeyTables, relyingParty, b64url } = await import("./webauthn.server");
+    const { passkeyTables, relyingParty } = await import("./webauthn.server");
 
     const { rpID, rpName } = relyingParty(await requestOrigin());
     const db = passkeyTables(supabaseAdmin);
@@ -45,7 +45,7 @@ export const startPasskeyRegistration = createServerFn({ method: "POST" })
     const options = await generateRegistrationOptions({
       rpName,
       rpID,
-      userID: b64url.decode(btoa(context.userId).replace(/=+$/, "")),
+      userID: Uint8Array.from(context.userId, (c) => c.charCodeAt(0)),
       userName: (context.claims["email"] as string | undefined) ?? "ROUT account",
       attestationType: "none",
       excludeCredentials: (existing ?? []).map((c: { credential_id: string }) => ({
@@ -204,7 +204,7 @@ export const finishPasskeyLogin = createServerFn({ method: "POST" })
         requireUserVerification: false,
         credential: {
           id: credential.credential_id,
-          publicKey: new Uint8Array(Buffer.from(credential.public_key, "base64url")),
+          publicKey: Uint8Array.from(Buffer.from(credential.public_key, "base64url")),
           counter: Number(credential.counter ?? 0),
           transports: credential.transports ?? undefined,
         },
