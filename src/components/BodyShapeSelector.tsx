@@ -73,6 +73,23 @@ function glyphModule(shape: BodyShape, x: number, y: number) {
   }
 }
 
+/** Bare mini-QR illustration in the given module shape. */
+export function MiniQrGlyph({
+  shape = "square",
+  className,
+}: {
+  shape?: BodyShape;
+  className?: string;
+}) {
+  return (
+    <svg viewBox="0 0 7 7" role="img" aria-hidden="true" className={className} fill="currentColor">
+      {GLYPH_MATRIX.flatMap((row, y) =>
+        row.map((on, x) => (on ? glyphModule(shape, x, y) : null)).filter(Boolean),
+      )}
+    </svg>
+  );
+}
+
 /** Small themed thumbnail for one pattern. */
 export function PatternGlyph({ pattern }: { pattern: PatternItem }) {
   if (!pattern.icon) return <ArtisticGlyph id={pattern.id as ArtisticPatternId} />;
