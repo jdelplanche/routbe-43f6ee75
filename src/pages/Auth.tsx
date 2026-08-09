@@ -34,32 +34,28 @@ const MARKS: Record<string, string> = {
 
 type ProviderKey = "google" | "github" | "gitlab" | "oidc";
 
-/**
- * Auth tiles. `mark` is an inline path, `remote` an official asset that is CSS
- * masked so every logo renders in the single theme text colour.
- */
+/** Auth tiles. Every `mark` is an inline path so the row never renders blank. */
 const TILES: {
   id: string;
   label: string;
   provider: ProviderKey;
-  mark?: string;
-  remote?: string;
+  mark: string;
 }[] = [
-  { id: "github", label: "GitHub", provider: "github", mark: MARKS.github },
-  { id: "google", label: "Google", provider: "google", mark: MARKS.google },
+  { id: "github", label: "GitHub", provider: "github", mark: MARKS.github! },
+  { id: "google", label: "Google", provider: "google", mark: MARKS.google! },
   {
     id: "mastodon",
     label: "Mastodon / Fediverse",
     provider: "gitlab",
-    remote: BRAND_MARKS.mastodon,
+    mark: MARKS.mastodon!,
   },
   {
     id: "keycloak",
     label: "Keycloak / Custom OIDC",
     provider: "oidc",
-    remote: BRAND_MARKS.keycloak,
+    mark: MARKS.keycloak!,
   },
-  { id: "gitlab", label: "GitLab", provider: "gitlab", mark: MARKS.gitlab },
+  { id: "gitlab", label: "GitLab", provider: "gitlab", mark: MARKS.gitlab! },
 ];
 
 const PROVIDER_LABELS: Record<string, string> = {
