@@ -6,6 +6,8 @@ import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+
 import { toast } from "sonner";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { ArrowLeft, Fingerprint, KeyRound, Loader2, Mail, MailCheck, ShieldCheck } from "lucide-react";
@@ -84,8 +86,19 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [usePassword, setUsePassword] = useState(false);
   const [sentTo, setSentTo] = useState<string | null>(null);
+  const [code, setCode] = useState("");
+  const [verifying, setVerifying] = useState(false);
+  const [resendIn, setResendIn] = useState(0);
   const [loading, setLoading] = useState(false);
   const [needsFirstAdmin, setNeedsFirstAdmin] = useState(false);
+
+  /** Cooldown so an impatient double-tap cannot trip Supabase's rate limit. */
+  useEffect(() => {
+    if (resendIn <= 0) return;
+    const t = setTimeout(() => setResendIn((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [resendIn]);
+
 
   useEffect(() => {
     let active = true;
@@ -110,7 +123,7 @@ export default function Auth() {
     } catch {
       /* not an admin, or the probe failed — fall through */
     }
-    return "/dashboard";
+    return "/claim";
   };
 
   useEffect(() => {
@@ -148,7 +161,47 @@ export default function Auth() {
     setLoading(false);
     if (error) return toast.error(error.message);
     setSentTo(address);
+    setCode("");
+    setResendIn(30);
   };
+
+  /** Cross-device fallback: the code from the e-mail signs you in right here. */
+  const verifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!sentTo || code.length !== 6) return;
+    setVerifying(true);
+    const { error } = await supabase.auth.verifyOtp({
+      email: sentTo,
+      token: code,
+      type: "email",
+    });
+    setVerifying(false);
+    if (error) {
+      setCode("");
+      return toast.error(
+        error.message.toLowerCase().includes("expired")
+          ? "That code has expired — request a new one."
+          : "That code is not valid. Check the six digits and try again.",
+      );
+    }
+    // The auth listener picks the session up and routes onward.
+    toast.success("Signed in");
+  };
+
+  const resend = async () => {
+    if (!sentTo || resendIn > 0) return;
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOtp({
+      email: sentTo,
+      options: { shouldCreateUser: true, emailRedirectTo: `${window.location.origin}/claim` },
+    });
+    setLoading(false);
+    if (error) return toast.error(error.message);
+    setResendIn(30);
+    toast.success("New code sent.");
+  };
+
+
 
   const signInWithPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -315,21 +368,73 @@ export default function Auth() {
           {sentTo ? (
             <div
               data-testid="auth-link-sent"
-              className="space-y-3 rounded-xl border border-border bg-muted/40 p-4 text-center"
+              className="space-y-4 rounded-xl border border-border bg-muted/40 p-4 text-center"
             >
               <MailCheck className="mx-auto h-6 w-6" aria-hidden />
               <p className="text-sm leading-relaxed">
-                We sent a secure sign-in link to <strong>{sentTo}</strong>. Open your inbox to sign
-                in or activate your account right away.
+                We sent a secure sign-in link and a 6-digit code to <strong>{sentTo}</strong>. Open
+                the link on this device, or type the code below if your mail is on another device.
               </p>
-              <button
-                type="button"
-                onClick={() => setSentTo(null)}
-                className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
-              >
-                Use a different address
-              </button>
+
+              <form onSubmit={verifyCode} className="space-y-3">
+                <Label htmlFor="auth-otp" className="block text-xs font-medium">
+                  Enter your 6-digit code
+                </Label>
+                <div className="flex justify-center">
+                  <InputOTP
+                    id="auth-otp"
+                    maxLength={6}
+                    value={code}
+                    onChange={setCode}
+                    inputMode="numeric"
+                    autoFocus
+                    aria-label="6-digit verification code"
+                  >
+                    <InputOTPGroup>
+                      {[0, 1, 2, 3, 4, 5].map((i) => (
+                        <InputOTPSlot key={i} index={i} />
+                      ))}
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
+                <Button
+                  type="submit"
+                  data-testid="auth-verify-code"
+                  className="h-11 w-full rounded-lg font-medium"
+                  disabled={verifying || code.length !== 6}
+                >
+                  {verifying ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden /> Verifying…
+                    </>
+                  ) : (
+                    "Verify and sign in"
+                  )}
+                </Button>
+              </form>
+
+              <div className="flex items-center justify-center gap-4">
+                <button
+                  type="button"
+                  onClick={resend}
+                  disabled={loading || resendIn > 0}
+                  className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground disabled:no-underline disabled:opacity-60"
+                >
+                  {resendIn > 0 ? `Resend in ${resendIn}s` : "Resend code"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSentTo(null);
+                    setCode("");
+                  }}
+                  className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                >
+                  Use a different address
+                </button>
+              </div>
             </div>
+
           ) : usePassword ? (
             <form onSubmit={signInWithPassword} className="space-y-3.5">
               {emailField}
