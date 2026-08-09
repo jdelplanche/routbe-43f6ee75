@@ -1,4 +1,20 @@
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
+import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
+
+// The route talks to Supabase and the matcher; both are stubbed so this suite
+// covers the webhook contract only, with no network access.
+vi.mock("@/integrations/supabase/client.server", () => {
+  const ok = { error: null };
+  const builder = {
+    insert: () => Promise.resolve(ok),
+    delete: () => ({ eq: () => Promise.resolve(ok) }),
+  };
+  return { supabaseAdmin: { from: () => builder } };
+});
+
+vi.mock("@/lib/sepa-matching.server", () => ({
+  matchInboundPayment: async () => ({ level: 3, reason: "no_match", reference: null }),
+}));
+
 import { Route } from "./inbound";
 
 // The handler is a plain function of { request }; we exercise it directly so the
