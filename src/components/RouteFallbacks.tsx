@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { reportLovableError } from "@/lib/lovable-error-reporting";
 
 /**
  * Route-level crash screen.
@@ -13,11 +12,6 @@ import { reportLovableError } from "@/lib/lovable-error-reporting";
  */
 export function RouteErrorFallback({ error, reset }: { error: Error; reset?: () => void }) {
   console.error("[RouteError]", error);
-  try {
-    reportLovableError(error, { boundary: "route" });
-  } catch {
-    /* reporting must never break the recovery UI */
-  }
 
   const showStack = import.meta.env.DEV || import.meta.env.MODE !== "production";
 
