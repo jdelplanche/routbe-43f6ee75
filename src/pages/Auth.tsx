@@ -145,22 +145,48 @@ export default function Auth() {
     return false;
   };
 
+  /**
+   * Where the magic link should land. Uses the live origin so preview,
+   * localhost and production each return to themselves — every one of these
+   * must be listed under Supabase Auth → URL configuration → Redirect URLs.
+   */
+  const magicLinkRedirect = () => {
+    const target =
+      new URLSearchParams(window.location.search).get("redirect") || "/claim";
+    const safe = target.startsWith("/") && !target.startsWith("//") ? target : "/claim";
+    return `${window.location.origin}${safe}`;
+  };
+
+  /** Surfaces the real Supabase/SMTP failure instead of a generic string. */
+  const reportAuthError = (error: unknown, scope: string) => {
+    const err = error as { message?: string; status?: number; code?: string; name?: string };
+    console.error(`[auth:${scope}]`, error);
+    const detail = [err?.code, err?.status ? `HTTP ${err.status}` : null]
+      .filter(Boolean)
+      .join(" · ");
+    toast.error(err?.message || "Authentication failed", {
+      description: detail || undefined,
+      duration: 8000,
+    });
+  };
+
   /** One button for both new and returning accounts. */
   const continueWithEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailAccepted()) return;
     setLoading(true);
     const address = email.trim().toLowerCase();
+    const redirectTo = magicLinkRedirect();
     const { error } = await supabase.auth.signInWithOtp({
       email: address,
       options: {
         // Silent sign-up: an unknown address is provisioned in the background.
         shouldCreateUser: true,
-        emailRedirectTo: `${window.location.origin}/claim`,
+        emailRedirectTo: redirectTo,
       },
     });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) return reportAuthError(error, `magic-link → ${redirectTo}`);
     setSentTo(address);
     setCode("");
     setResendIn(30);
@@ -178,11 +204,13 @@ export default function Auth() {
     });
     setVerifying(false);
     if (error) {
+      console.error("[auth:verify-otp]", error);
       setCode("");
       return toast.error(
         error.message.toLowerCase().includes("expired")
           ? "That code has expired — request a new one."
           : "That code is not valid. Check the six digits and try again.",
+        { description: error.message },
       );
     }
     // The auth listener picks the session up and routes onward.
@@ -194,13 +222,14 @@ export default function Auth() {
     setLoading(true);
     const { error } = await supabase.auth.signInWithOtp({
       email: sentTo,
-      options: { shouldCreateUser: true, emailRedirectTo: `${window.location.origin}/claim` },
+      options: { shouldCreateUser: true, emailRedirectTo: magicLinkRedirect() },
     });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) return reportAuthError(error, "resend");
     setResendIn(30);
     toast.success("New code sent.");
   };
+
 
 
 

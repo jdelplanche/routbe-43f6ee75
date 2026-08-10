@@ -12,15 +12,18 @@ import { reportLovableError } from "@/lib/lovable-error-reporting";
  * the whole app. Component-level crashes are still caught by <ErrorBoundary>.
  */
 export function RouteErrorFallback({ error, reset }: { error: Error; reset?: () => void }) {
+  console.error("[RouteError]", error);
   try {
     reportLovableError(error, { boundary: "route" });
   } catch {
     /* reporting must never break the recovery UI */
   }
 
+  const showStack = import.meta.env.DEV || import.meta.env.MODE !== "production";
+
   return (
     <main className="flex min-h-[60vh] items-center justify-center px-4 py-16">
-      <div className="w-full max-w-md space-y-4 rounded-3xl border border-border bg-card p-6 text-center">
+      <div className="w-full max-w-2xl space-y-4 rounded-3xl border border-border bg-card p-6 text-center">
         <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-destructive/10 text-destructive">
           <AlertTriangle className="h-5 w-5" aria-hidden />
         </span>
@@ -29,9 +32,15 @@ export function RouteErrorFallback({ error, reset }: { error: Error; reset?: () 
           Nothing was lost. Try again, or head back to the homepage — if it keeps happening, let us
           know via the contact page.
         </p>
-        <p className="break-words rounded-xl bg-muted/50 px-3 py-2 text-left text-[11px] text-muted-foreground">
-          {error.message || "Unknown error"}
+        <p className="break-words rounded-xl bg-muted/50 px-3 py-2 text-left font-mono text-xs text-destructive">
+          {error.name}: {error.message || "Unknown error"}
         </p>
+        {showStack && error.stack ? (
+          <pre className="max-h-64 overflow-auto rounded-xl border border-border bg-muted/40 p-3 text-left font-mono text-[11px] leading-relaxed whitespace-pre-wrap break-words text-muted-foreground">
+            {error.stack}
+          </pre>
+        ) : null}
+
         <div className="flex flex-wrap justify-center gap-2">
           <Button onClick={() => (reset ? reset() : window.location.reload())} className="gap-2">
             <RotateCcw className="h-4 w-4" aria-hidden />

@@ -14,6 +14,8 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { PasskeysPanel } from "@/components/settings/PasskeysPanel";
+
 import { Input } from "@/components/ui/input";
 import { PasswordField, isPasswordCompliant } from "@/components/PasswordField";
 import { Button } from "@/components/ui/button";
@@ -318,6 +320,9 @@ export default function AccountSettings() {
           Update password
         </Button>
       </section>
+
+      <PasskeysPanel />
+
 
       <section className="mt-4 space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
