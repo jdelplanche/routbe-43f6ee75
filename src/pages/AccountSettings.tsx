@@ -319,6 +319,9 @@ export default function AccountSettings() {
         </Button>
       </section>
 
+      <PasskeysPanel />
+
+
       <section className="mt-4 space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="flex items-center gap-2 text-lg font-medium">
