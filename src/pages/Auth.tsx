@@ -93,6 +93,18 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [needsFirstAdmin, setNeedsFirstAdmin] = useState(false);
 
+  /** Dev-only diagnostics for the magic-link flow. */
+  const [authDebug, setAuthDebug] = useState<Record<string, unknown> | null>(null);
+  /** WebAuthn availability, resolved after hydration. */
+  const [passkeySupported, setPasskeySupported] = useState(true);
+
+  useEffect(() => {
+    setPasskeySupported(
+      typeof window !== "undefined" && typeof window.PublicKeyCredential === "function",
+    );
+  }, []);
+
+
   /** Cooldown so an impatient double-tap cannot trip Supabase's rate limit. */
   useEffect(() => {
     if (resendIn <= 0) return;
