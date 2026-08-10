@@ -1,6 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
-import { Fingerprint, Loader2, Plus, Trash2 } from "lucide-react";
+import { Fingerprint, Loader2, Plus, ShieldAlert, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import {
   deletePasskey,
@@ -17,7 +27,26 @@ interface PasskeyRow {
 }
 
 const fmt = (value: string | null) =>
-  value ? new Date(value).toLocaleDateString(undefined, { dateStyle: "medium" }) : "never";
+  value ? new Date(value).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }) : "never";
+
+/** Turns any thrown value into a readable "message (code · HTTP 500)" string. */
+function describe(err: unknown, fallback: string): string {
+  if (!(err instanceof Error)) return fallback;
+  const meta = err as Error & { code?: string; status?: number; name?: string };
+  const detail = [meta.code, meta.status ? `HTTP ${meta.status}` : null].filter(Boolean).join(" · ");
+  const base = meta.message || fallback;
+  return detail ? `${base} (${detail})` : base;
+}
+
+/** Newest `last_used_at` in the list, so the active credential is obvious. */
+function mostRecentlyUsedId(rows: PasskeyRow[]): string | null {
+  let best: PasskeyRow | null = null;
+  for (const row of rows) {
+    if (!row.last_used_at) continue;
+    if (!best || new Date(row.last_used_at) > new Date(best.last_used_at!)) best = row;
+  }
+  return best?.id ?? null;
+}
 
 /**
  * Settings card: register a new passkey and manage the ones already attached
@@ -28,7 +57,15 @@ export function PasskeysPanel() {
   const [loading, setLoading] = useState(true);
   const [registering, setRegistering] = useState(false);
   const [removing, setRemoving] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<PasskeyRow | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [supported, setSupported] = useState(true);
+
+  useEffect(() => {
+    setSupported(
+      typeof window !== "undefined" && typeof window.PublicKeyCredential === "function",
+    );
+  }, []);
 
   const refresh = useCallback(async () => {
     try {
@@ -36,7 +73,7 @@ export function PasskeysPanel() {
       setError(null);
     } catch (err) {
       console.error("[passkeys] list failed", err);
-      setError(err instanceof Error ? err.message : "Could not load your passkeys.");
+      setError(describe(err, "Could not load your passkeys."));
     } finally {
       setLoading(false);
     }
@@ -47,7 +84,7 @@ export function PasskeysPanel() {
   }, [refresh]);
 
   const add = async () => {
-    if (typeof window === "undefined" || !window.PublicKeyCredential) {
+    if (!supported) {
       toast.error("This device or browser does not support passkeys.");
       return;
     }
@@ -55,7 +92,15 @@ export function PasskeysPanel() {
     setError(null);
     try {
       const { startRegistration } = await import("@simplewebauthn/browser");
-      const options = await startPasskeyRegistration();
+
+      let options: unknown;
+      try {
+        options = await startPasskeyRegistration();
+      } catch (err) {
+        console.error("[passkeys] startPasskeyRegistration failed", err);
+        throw new Error(describe(err, "The server could not start passkey registration."));
+      }
+
       const attestation = await startRegistration({ optionsJSON: options as never });
       const result = await finishPasskeyRegistration({ data: { response: attestation } });
       if (!result.ok) {
@@ -67,12 +112,13 @@ export function PasskeysPanel() {
       await refresh();
     } catch (err) {
       console.error("[passkeys] registration failed", err);
+      const name = (err as { name?: string }).name;
       const message =
-        err instanceof Error && err.name === "NotAllowedError"
+        name === "NotAllowedError" || name === "AbortError"
           ? "Registration was cancelled."
-          : err instanceof Error
-            ? err.message
-            : "Something went wrong adding this passkey.";
+          : name === "InvalidStateError"
+            ? "This device already has a passkey for your account."
+            : describe(err, "Something went wrong adding this passkey.");
       setError(message);
       toast.error(message);
     } finally {
@@ -80,20 +126,23 @@ export function PasskeysPanel() {
     }
   };
 
-  const remove = async (id: string) => {
-    setRemoving(id);
+  const remove = async (row: PasskeyRow) => {
+    setRemoving(row.id);
     try {
-      const res = await deletePasskey({ data: { id } });
+      const res = await deletePasskey({ data: { id: row.id } });
       if (!res.ok) throw new Error("Delete was refused.");
-      setKeys((rows) => rows.filter((r) => r.id !== id));
+      setKeys((rows) => rows.filter((r) => r.id !== row.id));
       toast.success("Passkey removed");
     } catch (err) {
       console.error("[passkeys] delete failed", err);
-      toast.error(err instanceof Error ? err.message : "Could not remove that passkey.");
+      toast.error(describe(err, "Could not remove that passkey."));
     } finally {
       setRemoving(null);
+      setPendingDelete(null);
     }
   };
+
+  const recentId = mostRecentlyUsedId(keys);
 
   return (
     <section className="mt-4 space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
@@ -101,7 +150,7 @@ export function PasskeysPanel() {
         <h2 className="flex items-center gap-2 text-lg font-medium">
           <Fingerprint className="h-4 w-4" /> Passkeys
         </h2>
-        <Button onClick={add} disabled={registering} className="h-10 gap-2">
+        <Button onClick={add} disabled={registering || !supported} className="h-10 gap-2">
           {registering ? (
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
           ) : (
@@ -113,6 +162,15 @@ export function PasskeysPanel() {
       <p className="text-sm text-muted-foreground">
         Sign in with Face ID, Touch ID, Windows Hello or a security key — no e-mail round trip.
       </p>
+
+      {!supported ? (
+        <p className="flex items-start gap-2 rounded-xl border border-border bg-muted/50 px-3 py-2 text-sm text-muted-foreground">
+          <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+          This browser or device doesn&apos;t support passkeys. Try a recent version of Safari,
+          Chrome, Edge or Firefox on a device with a screen lock — your e-mail link and 6-digit code
+          keep working everywhere.
+        </p>
+      ) : null}
 
       {error ? (
         <p role="alert" className="rounded-xl bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -134,8 +192,13 @@ export function PasskeysPanel() {
             {keys.map((key) => (
               <li key={key.id} className="flex items-center justify-between gap-3 p-3">
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-foreground">
+                  <p className="flex items-center gap-2 truncate text-sm font-medium text-foreground">
                     {key.device_label || "Passkey"}
+                    {key.id === recentId ? (
+                      <span className="shrink-0 rounded-full border border-border bg-muted px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                        Most recent
+                      </span>
+                    ) : null}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     Added {fmt(key.created_at)} · last used {fmt(key.last_used_at)}
@@ -146,7 +209,7 @@ export function PasskeysPanel() {
                   size="sm"
                   className="shrink-0 gap-1.5 text-destructive hover:text-destructive"
                   disabled={removing === key.id}
-                  onClick={() => remove(key.id)}
+                  onClick={() => setPendingDelete(key)}
                   aria-label={`Remove ${key.device_label || "passkey"}`}
                 >
                   {removing === key.id ? (
@@ -154,13 +217,37 @@ export function PasskeysPanel() {
                   ) : (
                     <Trash2 className="h-4 w-4" aria-hidden />
                   )}
-                  Remove
+                  Delete
                 </Button>
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      <AlertDialog
+        open={pendingDelete !== null}
+        onOpenChange={(open) => !open && setPendingDelete(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove this passkey?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {pendingDelete?.device_label || "This passkey"} will no longer sign you in. You can
+              always register it again, and your e-mail link keeps working.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep it</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => pendingDelete && void remove(pendingDelete)}
+            >
+              Delete passkey
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 }
