@@ -93,6 +93,18 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [needsFirstAdmin, setNeedsFirstAdmin] = useState(false);
 
+  /** Dev-only diagnostics for the magic-link flow. */
+  const [authDebug, setAuthDebug] = useState<Record<string, unknown> | null>(null);
+  /** WebAuthn availability, resolved after hydration. */
+  const [passkeySupported, setPasskeySupported] = useState(true);
+
+  useEffect(() => {
+    setPasskeySupported(
+      typeof window !== "undefined" && typeof window.PublicKeyCredential === "function",
+    );
+  }, []);
+
+
   /** Cooldown so an impatient double-tap cannot trip Supabase's rate limit. */
   useEffect(() => {
     if (resendIn <= 0) return;
@@ -168,7 +180,18 @@ export default function Auth() {
       description: detail || undefined,
       duration: 8000,
     });
+    setAuthDebug({
+      scope,
+      at: new Date().toISOString(),
+      redirectTo: magicLinkRedirect(),
+      origin: typeof window !== "undefined" ? window.location.origin : null,
+      name: err?.name ?? null,
+      code: err?.code ?? null,
+      status: err?.status ?? null,
+      message: err?.message ?? String(error),
+    });
   };
+
 
   /** One button for both new and returning accounts. */
   const continueWithEmail = async (e: React.FormEvent) => {
@@ -290,9 +313,12 @@ export default function Auth() {
    * listener routes onward, so there is no blank screen in between.
    */
   const passkey = async () => {
-    if (typeof window === "undefined" || !("PublicKeyCredential" in window)) {
-      return toast.error("This device or browser does not support passkeys.");
+    if (!passkeySupported) {
+      return toast.error("This device or browser does not support passkeys.", {
+        description: "Use the e-mail link or 6-digit code instead.",
+      });
     }
+
     setLoading(true);
     try {
       const { startAuthentication } = await import("@simplewebauthn/browser");
@@ -382,15 +408,35 @@ export default function Auth() {
           <button
             type="button"
             onClick={passkey}
-            disabled={loading}
+            disabled={loading || !passkeySupported}
+            aria-describedby="passkey-support-note"
             className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-foreground text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             <Fingerprint className="h-4 w-4" aria-hidden />
             Continue with Passkey
           </button>
-          <p className="mt-1 text-center text-[11px] text-muted-foreground">
-            Fingerprint, face or hardware key — nothing leaves your device.
+          <p id="passkey-support-note" className="mt-1 text-center text-[11px] text-muted-foreground">
+            {passkeySupported
+              ? "Fingerprint, face or hardware key — nothing leaves your device."
+              : "This browser or device doesn't support passkeys — use the e-mail link or 6-digit code below."}
           </p>
+
+          {import.meta.env.DEV && (
+            <details className="mt-3 rounded-xl border border-dashed border-border bg-muted/40 p-3 text-[11px]">
+              <summary className="cursor-pointer font-medium">Auth debug (dev only)</summary>
+              <p className="mt-2 break-all text-muted-foreground">
+                emailRedirectTo:{" "}
+                <code>{typeof window !== "undefined" ? magicLinkRedirect() : "—"}</code>
+              </p>
+              <p className="mt-1 text-muted-foreground">
+                passkey support: <code>{String(passkeySupported)}</code>
+              </p>
+              <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap text-muted-foreground">
+                {authDebug ? JSON.stringify(authDebug, null, 2) : "No auth errors yet."}
+              </pre>
+            </details>
+          )}
+
 
           {/* Secondary connectors — equal weight, all masked to one colour */}
           <div data-testid="auth-provider-tiles" className="mt-3.5 grid grid-cols-5 gap-2">
