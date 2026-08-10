@@ -57,12 +57,24 @@ create index if not exists webauthn_challenges_expires_at_idx
   on public.webauthn_challenges (expires_at);
 
 -- Never reachable from the browser: only the service role touches this table.
-revoke all on public.webauthn_challenges from anon, authenticated;
+revoke all on public.webauthn_challenges from public, anon, authenticated;
+alter default privileges in schema public revoke all on tables from anon, authenticated;
 grant all on public.webauthn_challenges to service_role;
 
 alter table public.webauthn_challenges enable row level security;
--- No policies on purpose: RLS denies every anon/authenticated request, while
--- the service role bypasses RLS for the server-side ceremony.
+-- Belt and braces: force RLS (so even a table owner is filtered) and add an
+-- explicit deny-all policy for anon/authenticated. The service role bypasses
+-- RLS entirely, so the server-side ceremony is unaffected.
+alter table public.webauthn_challenges force row level security;
+
+drop policy if exists "No client access to challenges" on public.webauthn_challenges;
+create policy "No client access to challenges"
+  on public.webauthn_challenges
+  for all
+  to anon, authenticated
+  using (false)
+  with check (false);
+
 
 -- 3. Housekeeping -------------------------------------------------------------
 create or replace function public.prune_webauthn_challenges()
