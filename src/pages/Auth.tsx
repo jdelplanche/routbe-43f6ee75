@@ -180,7 +180,18 @@ export default function Auth() {
       description: detail || undefined,
       duration: 8000,
     });
+    setAuthDebug({
+      scope,
+      at: new Date().toISOString(),
+      redirectTo: magicLinkRedirect(),
+      origin: typeof window !== "undefined" ? window.location.origin : null,
+      name: err?.name ?? null,
+      code: err?.code ?? null,
+      status: err?.status ?? null,
+      message: err?.message ?? String(error),
+    });
   };
+
 
   /** One button for both new and returning accounts. */
   const continueWithEmail = async (e: React.FormEvent) => {
