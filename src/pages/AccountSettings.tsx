@@ -14,6 +14,8 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { PasskeysPanel } from "@/components/settings/PasskeysPanel";
+
 import { Input } from "@/components/ui/input";
 import { PasswordField, isPasswordCompliant } from "@/components/PasswordField";
 import { Button } from "@/components/ui/button";
