@@ -313,9 +313,12 @@ export default function Auth() {
    * listener routes onward, so there is no blank screen in between.
    */
   const passkey = async () => {
-    if (typeof window === "undefined" || !("PublicKeyCredential" in window)) {
-      return toast.error("This device or browser does not support passkeys.");
+    if (!passkeySupported) {
+      return toast.error("This device or browser does not support passkeys.", {
+        description: "Use the e-mail link or 6-digit code instead.",
+      });
     }
+
     setLoading(true);
     try {
       const { startAuthentication } = await import("@simplewebauthn/browser");
