@@ -1,4 +1,4 @@
-import { ShieldCheck, PenTool, GitBranch } from "lucide-react";
+import { ShieldCheck, PenTool, GitBranch, Mail, Award } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { Link } from "@/lib/router-compat";
 
@@ -9,6 +9,8 @@ export function ValuesSection() {
     { key: "sovereign", Icon: ShieldCheck },
     { key: "vector", Icon: PenTool },
     { key: "open", Icon: GitBranch },
+    { key: "identity", Icon: Mail },
+    { key: "badge", Icon: Award },
   ] as const;
 
   return (
@@ -55,3 +57,4 @@ export function ValuesSection() {
     </section>
   );
 }
+
