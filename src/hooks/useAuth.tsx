@@ -115,7 +115,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }
             return;
           }
-          if (event === "SIGNED_IN") void flushSignupProfile(s?.user);
+          if (event === "SIGNED_IN") {
+            void flushSignupProfile(s?.user);
+            // Every registered member is an Early Believer with a blue mark:
+            // no payment, no verification. Idempotent on the server.
+            void ensureMemberBaseline({}).catch(() => {});
+          }
           void router.invalidate();
           void queryClient.invalidateQueries();
         }
