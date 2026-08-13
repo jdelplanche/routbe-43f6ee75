@@ -5,6 +5,7 @@ import { useRouter } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { SANDBOX_MODE_MESSAGE } from "@/lib/api-secrets";
 import { syncSignupProfile } from "@/lib/signup-profile.functions";
+import { ensureMemberBaseline } from "@/lib/membership.functions";
 import { claimReferral } from "@/lib/referral.functions";
 import { clearReferrer, readReferrer } from "@/lib/referral";
 
