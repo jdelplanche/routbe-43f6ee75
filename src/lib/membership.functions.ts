@@ -1,18 +1,15 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import {
+  needsEarlyBelieverBackfill,
+  toBaselineStatus,
+  toMemberStatus,
+  type MemberStatus,
+} from "@/lib/membership-rules";
 
-export type MemberStatus = {
-  /** Free for every registered member — no payment, no verification. */
-  earlyBeliever: boolean;
-  /** Blue mark: granted on registration, kept in sync with the profile row. */
-  blueMark: boolean;
-  /** Identity-verified (legal name on file + paid verification). */
-  verified: boolean;
-  isPaid: boolean;
-  username: string | null;
-  /** The member's @rout.be address, once a handle exists. */
-  aliasEmail: string | null;
-};
+export type { MemberStatus } from "@/lib/membership-rules";
+
+const PROFILE_COLUMNS = "username, verified, is_paid, is_early_believer";
 
 /**
  * Baseline membership: every registered member is an Early Believer with a blue
@@ -26,11 +23,11 @@ export const ensureMemberBaseline = createServerFn({ method: "POST" })
 
     const { data: profile } = await supabaseAdmin
       .from("profiles")
-      .select("username, verified, is_paid, is_early_believer")
+      .select(PROFILE_COLUMNS)
       .eq("id", context.userId)
       .maybeSingle();
 
-    if (!profile?.is_early_believer) {
+    if (needsEarlyBelieverBackfill(profile)) {
       await supabaseAdmin
         .from("profiles")
         .update({ is_early_believer: true })
@@ -40,15 +37,7 @@ export const ensureMemberBaseline = createServerFn({ method: "POST" })
     const { awardBadges } = await import("./badge-grants.server");
     await awardBadges(context.userId, ["early_believer"], "system", { reason: "registration" });
 
-    const username = (profile?.username as string | null) ?? null;
-    return {
-      earlyBeliever: true,
-      blueMark: true,
-      verified: Boolean(profile?.verified),
-      isPaid: Boolean(profile?.is_paid),
-      username,
-      aliasEmail: username ? `${username}@rout.be` : null,
-    };
+    return toBaselineStatus(profile);
   });
 
 /** Read-only membership snapshot for the signed-in member. */
@@ -57,17 +46,9 @@ export const getMemberStatus = createServerFn({ method: "GET" })
   .handler(async ({ context }): Promise<MemberStatus> => {
     const { data } = await context.supabase
       .from("profiles")
-      .select("username, verified, is_paid, is_early_believer")
+      .select(PROFILE_COLUMNS)
       .eq("id", context.userId)
       .maybeSingle();
 
-    const username = (data?.username as string | null) ?? null;
-    return {
-      earlyBeliever: Boolean(data?.is_early_believer),
-      blueMark: true,
-      verified: Boolean(data?.verified),
-      isPaid: Boolean(data?.is_paid),
-      username,
-      aliasEmail: username ? `${username}@rout.be` : null,
-    };
+    return toMemberStatus(data);
   });
