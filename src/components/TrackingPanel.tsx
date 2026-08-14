@@ -67,12 +67,20 @@ function normalizeUrl(v: string): string {
   return `https://${trimmed}`;
 }
 
+/** Which link a copy action targets. */
+type CopyField = "short" | "stats";
+type CopyState = { field: CopyField | null; state: "idle" | "copying" | "copied" | "error" };
+
 export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: TrackingPanelProps) {
   const [loading, setLoading] = useState(false);
   const [label, setLabel] = useState("");
   // Verified branded domains this user may publish links on.
   const [domains, setDomains] = useState<{ domain: string; is_default: boolean }[]>([]);
   const [domainChoice, setDomainChoice] = useState<string>("default");
+  const [copyState, setCopyState] = useState<CopyState>({ field: null, state: "idle" });
+  // Screen-reader announcement for copy success/failure.
+  const [announcement, setAnnouncement] = useState("");
+  const origin = typeof window === "undefined" ? "" : window.location.origin;
 
   useEffect(() => {
     let cancelled = false;
