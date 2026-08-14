@@ -16,7 +16,14 @@ const CARDS = [
 
 export function ValuesSection() {
   const { t } = useI18n();
-  const { data: status } = useMemberStatus();
+  const {
+    data: status,
+    isPending,
+    isError,
+    isFetching,
+    refetch,
+  } = useMemberStatus();
+
 
   return (
     <section id="why-rout" className="border-t border-border">
