@@ -61,3 +61,21 @@ export function toBaselineStatus(profile: MembershipProfileRow): MemberStatus {
 export function needsEarlyBelieverBackfill(profile: MembershipProfileRow): boolean {
   return profile?.is_early_believer !== true;
 }
+
+/** Side effects the baseline needs, injected so it stays testable. */
+export type BaselineDeps = {
+  fetchProfile: () => Promise<MembershipProfileRow>;
+  markEarlyBeliever: () => Promise<void>;
+  awardEarlyBelieverBadge: () => Promise<void>;
+};
+
+/**
+ * Idempotent baseline: flips `is_early_believer` only when it is not set yet,
+ * always (re)requests the badge — badge granting itself skips duplicates.
+ */
+export async function applyMemberBaseline(deps: BaselineDeps): Promise<MemberStatus> {
+  const profile = await deps.fetchProfile();
+  if (needsEarlyBelieverBackfill(profile)) await deps.markEarlyBeliever();
+  await deps.awardEarlyBelieverBadge();
+  return toBaselineStatus(profile);
+}
