@@ -80,6 +80,7 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
   const [copyState, setCopyState] = useState<CopyState>({ field: null, state: "idle" });
   // Screen-reader announcement for copy success/failure.
   const [announcement, setAnnouncement] = useState("");
+  const [createError, setCreateError] = useState<string | null>(null);
   const origin = typeof window === "undefined" ? "" : window.location.origin;
 
   useEffect(() => {
@@ -147,7 +148,9 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
       toast.success("Trackable QR ready");
     } catch (e: unknown) {
       console.error(e);
-      toast.error(errorMessage(e, "Failed to create tracked link"));
+      const message = errorMessage(e, "Failed to create tracked link");
+      setCreateError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -337,6 +340,24 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
       >
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Create trackable QR"}
       </Button>
+      {createError ? (
+        <div
+          role="alert"
+          className="flex flex-wrap items-center gap-2 rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-xs text-destructive"
+        >
+          <span>Short link generation failed: {createError}</span>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="h-7 gap-1.5 text-xs"
+            disabled={loading}
+            onClick={() => void handleCreate()}
+          >
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden /> Retry
+          </Button>
+        </div>
+      ) : null}
       {!ready && (
         <p className="text-[11px] text-muted-foreground">
           Add a link or upload a file to enable tracking.
