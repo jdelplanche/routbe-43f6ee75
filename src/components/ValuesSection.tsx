@@ -37,8 +37,40 @@ export function ValuesSection() {
             <p className="mt-3 text-sm text-neutral-400">{t("values.subheading")}</p>
           </div>
 
-          {status ? (
-            <div className="mt-6 flex flex-wrap items-center gap-2">
+          {isPending ? (
+            <p
+              role="status"
+              aria-live="polite"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-neutral-800 px-3 py-1 text-xs text-neutral-300"
+            >
+              <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+              {t("values.status.loading")}
+            </p>
+          ) : isError ? (
+            <div
+              role="alert"
+              className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-xs text-amber-200"
+            >
+              <span className="inline-flex items-center gap-2">
+                <AlertTriangle className="h-3.5 w-3.5" aria-hidden />
+                {t("values.status.error")}
+              </span>
+              <button
+                type="button"
+                onClick={() => void refetch()}
+                disabled={isFetching}
+                className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/20 px-3 py-1 font-medium text-amber-100 transition-colors hover:bg-amber-500/30 disabled:opacity-60"
+              >
+                {isFetching ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+                ) : (
+                  <RefreshCw className="h-3.5 w-3.5" aria-hidden />
+                )}
+                {t("values.status.retry")}
+              </button>
+            </div>
+          ) : status ? (
+            <div className="mt-6 flex flex-wrap items-center gap-2" aria-live="polite">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-800 px-3 py-1 text-xs font-medium text-neutral-100">
                 <Award className="h-3.5 w-3.5" strokeWidth={2} />
                 {status.earlyBeliever
