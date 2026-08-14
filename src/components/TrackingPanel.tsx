@@ -5,7 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Copy, BarChart3, Loader2, X, ExternalLink, Globe } from "lucide-react";
+import {
+  Copy,
+  BarChart3,
+  Loader2,
+  X,
+  ExternalLink,
+  Globe,
+  Check,
+  RotateCcw,
+} from "lucide-react";
 import {
   Select,
   SelectContent,
