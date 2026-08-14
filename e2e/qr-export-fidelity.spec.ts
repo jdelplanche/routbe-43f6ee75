@@ -12,8 +12,14 @@ const FORMAT_LABEL = { png: "PNG", svg: "SVG", jpeg: "JPG" } as const;
 type Format = keyof typeof FORMAT_LABEL;
 
 async function selectFormat(page: Page, format: Format) {
-  const button = page.getByText(FORMAT_LABEL[format], { exact: true }).first();
-  await button.click();
+  const option = page.getByTestId(`format-${format}`);
+  if (!(await option.isVisible().catch(() => false))) {
+    // The format cards live inside the collapsed "print size / export" section.
+    const trigger = page.getByRole("button", { name: /print size|afmeting|formaat/i }).first();
+    await trigger.click();
+  }
+  await option.click();
+  await expect(option).toHaveAttribute("aria-pressed", "true");
 }
 
 async function download(page: Page): Promise<Download> {
