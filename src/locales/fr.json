@@ -314,5 +314,8 @@
   "admin.webhooks.attempts": "Tentatives",
   "admin.webhooks.processed": "Traité",
   "admin.webhooks.error": "Erreur / trace",
-  "admin.webhooks.payload": "Payload"
+  "admin.webhooks.payload": "Payload",
+  "values.status.loading": "Chargement de votre statut de membre…",
+  "values.status.error": "Impossible de charger votre statut de membre.",
+  "values.status.retry": "Réessayer"
 }

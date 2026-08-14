@@ -5,7 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Copy, BarChart3, Loader2, X, ExternalLink, Globe } from "lucide-react";
+import {
+  Copy,
+  BarChart3,
+  Loader2,
+  X,
+  ExternalLink,
+  Globe,
+  Check,
+  RotateCcw,
+} from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -58,12 +67,21 @@ function normalizeUrl(v: string): string {
   return `https://${trimmed}`;
 }
 
+/** Which link a copy action targets. */
+type CopyField = "short" | "stats";
+type CopyState = { field: CopyField | null; state: "idle" | "copying" | "copied" | "error" };
+
 export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: TrackingPanelProps) {
   const [loading, setLoading] = useState(false);
   const [label, setLabel] = useState("");
   // Verified branded domains this user may publish links on.
   const [domains, setDomains] = useState<{ domain: string; is_default: boolean }[]>([]);
   const [domainChoice, setDomainChoice] = useState<string>("default");
+  const [copyState, setCopyState] = useState<CopyState>({ field: null, state: "idle" });
+  // Screen-reader announcement for copy success/failure.
+  const [announcement, setAnnouncement] = useState("");
+  const [createError, setCreateError] = useState<string | null>(null);
+  const origin = typeof window === "undefined" ? "" : window.location.origin;
 
   useEffect(() => {
     let cancelled = false;
@@ -104,6 +122,7 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
       return;
     }
     setLoading(true);
+    setCreateError(null);
     try {
       const { data: sessionData } = await supabase.auth.getSession();
       const accessToken = sessionData.session?.access_token;
@@ -129,7 +148,9 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
       toast.success("Trackable QR ready");
     } catch (e: unknown) {
       console.error(e);
-      toast.error(errorMessage(e, "Failed to create tracked link"));
+      const message = errorMessage(e, "Failed to create tracked link");
+      setCreateError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -140,67 +161,127 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
     setLabel("");
   };
 
-  const copy = async (v: string, msg: string) => {
+  const copy = async (field: CopyField, value: string, label: string) => {
+    setCopyState({ field, state: "copying" });
     try {
-      await navigator.clipboard.writeText(v);
-      toast.success(msg);
-    } catch {
-      toast.error("Copy failed");
+      await navigator.clipboard.writeText(value);
+      setCopyState({ field, state: "copied" });
+      setAnnouncement(`${label} copied to clipboard`);
+      toast.success(`${label} copied`);
+      window.setTimeout(
+        () => setCopyState((s) => (s.field === field ? { field: null, state: "idle" } : s)),
+        2000,
+      );
+    } catch (e) {
+      setCopyState({ field, state: "error" });
+      setAnnouncement(`Copying the ${label.toLowerCase()} failed. Use the retry button.`);
+      toast.error(`Couldn't copy the ${label.toLowerCase()}. ${errorMessage(e, "Try again.")}`);
     }
   };
 
   if (tracked) {
     const statsPath = `/stats/${tracked.dashboard_token}`;
-    const statsUrl = `${window.location.origin}${statsPath}`;
+    const statsUrl = `${origin}${statsPath}`;
+
+    const copyButton = (field: CopyField, value: string, label: string) => {
+      const active = copyState.field === field ? copyState.state : "idle";
+      const Icon =
+        active === "copying" ? Loader2 : active === "copied" ? Check : active === "error" ? RotateCcw : Copy;
+      return (
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          className="h-10 w-10 shrink-0"
+          disabled={active === "copying"}
+          onClick={() => void copy(field, value, label)}
+          aria-label={
+            active === "error"
+              ? `Retry copying ${label.toLowerCase()}`
+              : active === "copied"
+                ? `${label} copied`
+                : `Copy ${label.toLowerCase()}`
+          }
+        >
+          <Icon className={`w-4 h-4 ${active === "copying" ? "animate-spin" : ""}`} aria-hidden />
+        </Button>
+      );
+    };
+
     return (
       <div className="rounded-2xl border border-border bg-card p-4 space-y-3">
+        <p aria-live="polite" className="sr-only">
+          {announcement}
+        </p>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-4 h-4 text-foreground" />
             <span className="text-sm font-medium">Tracking enabled</span>
           </div>
           <button
+            type="button"
             onClick={handleRemove}
             className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
           >
-            <X className="w-3 h-3" /> Remove
+            <X className="w-3 h-3" aria-hidden /> Remove
           </button>
         </div>
 
         <div className="space-y-1">
-          <p className="text-xs text-muted-foreground">Short link (encoded in QR)</p>
+          <label htmlFor="tracked-short-link" className="block text-xs text-muted-foreground">
+            Short link (encoded in QR)
+          </label>
           <div className="flex gap-2">
-            <Input readOnly value={tracked.redirect_url} className="h-10 text-xs font-mono" />
+            <Input
+              id="tracked-short-link"
+              readOnly
+              value={tracked.redirect_url}
+              className="h-10 text-xs font-mono"
+              aria-describedby="tracked-short-link-hint"
+            />
+            {copyButton("short", tracked.redirect_url, "Short link")}
             <Button
+              asChild
               type="button"
               variant="outline"
               size="icon"
               className="h-10 w-10 shrink-0"
-              onClick={() => copy(tracked.redirect_url, "Short link copied")}
-              aria-label="Copy short link"
             >
-              <Copy className="w-4 h-4" />
+              <a
+                href={tracked.redirect_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open short link in a new tab"
+              >
+                <ExternalLink className="w-4 h-4" aria-hidden />
+              </a>
             </Button>
           </div>
+          <p id="tracked-short-link-hint" className="text-[11px] text-muted-foreground">
+            {copyState.field === "short" && copyState.state === "error"
+              ? "Copying failed — your browser blocked clipboard access. Retry, or select the field and copy manually."
+              : "This is the URL encoded in your QR. Every scan is counted before the redirect."}
+          </p>
         </div>
 
         <div className="space-y-1">
-          <p className="text-xs text-muted-foreground">Private stats link (save it!)</p>
+          <label htmlFor="tracked-stats-link" className="block text-xs text-muted-foreground">
+            Private stats link (save it!)
+          </label>
           <div className="flex gap-2">
-            <Input readOnly value={statsUrl} className="h-10 text-xs font-mono" />
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              className="h-10 w-10 shrink-0"
-              onClick={() => copy(statsUrl, "Stats link copied")}
-              aria-label="Copy stats link"
-            >
-              <Copy className="w-4 h-4" />
-            </Button>
+            <Input
+              id="tracked-stats-link"
+              readOnly
+              value={statsUrl}
+              className="h-10 text-xs font-mono"
+              aria-describedby="tracked-stats-link-hint"
+            />
+            {copyButton("stats", statsUrl, "Stats link")}
           </div>
-          <p className="text-[11px] text-muted-foreground">
-            Anyone with this link can view scan stats. There's no way to recover it if lost.
+          <p id="tracked-stats-link-hint" className="text-[11px] text-muted-foreground">
+            {copyState.field === "stats" && copyState.state === "error"
+              ? "Copying failed — retry, or select the field and copy manually."
+              : "Anyone with this link can view scan stats. There's no way to recover it if lost."}
           </p>
         </div>
 
@@ -208,7 +289,7 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
           to={statsPath}
           className="inline-flex items-center gap-1 text-sm font-medium text-foreground hover:underline"
         >
-          Open dashboard <ExternalLink className="w-3.5 h-3.5" />
+          Open dashboard <ExternalLink className="w-3.5 h-3.5" aria-hidden />
         </RouterLink>
       </div>
     );
@@ -259,6 +340,24 @@ export function TrackingPanel({ qrType, targetUrl, tracked, onTrackedChange }: T
       >
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Create trackable QR"}
       </Button>
+      {createError ? (
+        <div
+          role="alert"
+          className="flex flex-wrap items-center gap-2 rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-xs text-destructive"
+        >
+          <span>Short link generation failed: {createError}</span>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="h-7 gap-1.5 text-xs"
+            disabled={loading}
+            onClick={() => void handleCreate()}
+          >
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden /> Retry
+          </Button>
+        </div>
+      ) : null}
       {!ready && (
         <p className="text-[11px] text-muted-foreground">
           Add a link or upload a file to enable tracking.

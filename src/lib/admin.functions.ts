@@ -783,3 +783,16 @@ export const retryVipAliasSync = createServerFn({ method: "POST" })
     });
     return { ok: true as const, ...result, error: result.lastError ?? null };
   });
+
+/** Admin-only membership debugging: profile flags + badge grants for a member. */
+export const lookupMembers = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) =>
+    z.object({ query: z.string().trim().max(200).default("") }).parse(data),
+  )
+  .handler(async ({ data, context }) => {
+    const { assertAdminRole } = await import("./admin.server");
+    await assertAdminRole(context.supabase, context.userId);
+    const { findMembers } = await import("./member-lookup.server");
+    return { members: await findMembers(data.query) };
+  });

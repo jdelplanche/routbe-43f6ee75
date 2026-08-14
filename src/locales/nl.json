@@ -314,5 +314,8 @@
   "admin.webhooks.attempts": "Pogingen",
   "admin.webhooks.processed": "Verwerkt",
   "admin.webhooks.error": "Foutmelding / stack trace",
-  "admin.webhooks.payload": "Payload"
+  "admin.webhooks.payload": "Payload",
+  "values.status.loading": "Je lidstatus wordt geladen…",
+  "values.status.error": "We konden je lidstatus niet laden.",
+  "values.status.retry": "Opnieuw proberen"
 }

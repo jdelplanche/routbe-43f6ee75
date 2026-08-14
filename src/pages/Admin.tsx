@@ -24,6 +24,7 @@ import {
 import { toast } from "sonner";
 import { logQuietly, notifyError } from "@/lib/notify";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { MemberStatusPanel } from "@/components/admin/MemberStatusPanel";
 import { AdminVipPanel } from "@/components/admin/AdminVipPanel";
 import { EmailFlowTester } from "@/components/admin/EmailFlowTester";
 
@@ -1238,6 +1239,7 @@ export default function Admin() {
             <option value="transactions">Transactions &amp; Audit</option>
             <option value="inbound">Inbound Payments</option>
             <option value="vip">VIP Handles</option>
+            <option value="members">Member Status</option>
             <option value="network">Network &amp; Aliasing</option>
             <option value="deployment">Deployment</option>
           </select>
@@ -1256,6 +1258,9 @@ export default function Admin() {
             </TabsTrigger>
             <TabsTrigger value="vip" data-testid="tab-vip">
               VIP Handles
+            </TabsTrigger>
+            <TabsTrigger value="members" data-testid="tab-members">
+              Member Status
             </TabsTrigger>
             <TabsTrigger value="network" data-testid="tab-network">
               Network &amp; Aliasing
@@ -2478,6 +2483,19 @@ export default function Admin() {
           {/* ---------------------------------------------------------- */}
           <TabsContent value="vip" className="space-y-3">
             <AdminVipPanel />
+          </TabsContent>
+
+          {/* ---------------------------------------------------------- */}
+          <TabsContent value="members" className="space-y-3">
+            <section className="space-y-4 rounded-2xl border border-border bg-card p-4 pb-6 sm:p-5">
+              <div>
+                <h2 className="text-base font-medium">Member status</h2>
+                <p className="text-sm text-muted-foreground">
+                  Inspect Early Believer flags, verification fields and badge grants per member.
+                </p>
+              </div>
+              <MemberStatusPanel />
+            </section>
           </TabsContent>
 
 
