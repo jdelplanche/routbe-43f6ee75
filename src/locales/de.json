@@ -314,5 +314,8 @@
   "admin.webhooks.attempts": "Versuche",
   "admin.webhooks.processed": "Verarbeitet",
   "admin.webhooks.error": "Fehler / Stacktrace",
-  "admin.webhooks.payload": "Payload"
+  "admin.webhooks.payload": "Payload",
+  "values.status.loading": "Mitgliedsstatus wird geladen…",
+  "values.status.error": "Wir konnten deinen Mitgliedsstatus nicht laden.",
+  "values.status.retry": "Erneut versuchen"
 }

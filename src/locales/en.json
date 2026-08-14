@@ -314,5 +314,8 @@
   "admin.webhooks.attempts": "Attempts",
   "admin.webhooks.processed": "Processed",
   "admin.webhooks.error": "Error / stack trace",
-  "admin.webhooks.payload": "Payload"
+  "admin.webhooks.payload": "Payload",
+  "values.status.loading": "Loading your membership status…",
+  "values.status.error": "We couldn't load your membership status.",
+  "values.status.retry": "Try again"
 }
