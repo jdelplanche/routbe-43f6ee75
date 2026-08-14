@@ -19,6 +19,7 @@ export function FormatSelector({ value, onChange }: FormatSelectorProps) {
       {formats.map((f) => (
         <SelectedOptionCard
           key={f.id}
+          data-testid={`format-${f.id}`}
           isSelected={value === f.id}
           onSelect={() => onChange(f.id)}
           title={f.hint}
