@@ -1,4 +1,15 @@
-import { ShieldCheck, PenTool, GitBranch, Mail, Award, BadgeCheck, Lock } from "lucide-react";
+import {
+  ShieldCheck,
+  PenTool,
+  GitBranch,
+  Mail,
+  Award,
+  BadgeCheck,
+  Lock,
+  Loader2,
+  AlertTriangle,
+  RefreshCw,
+} from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { Link } from "@/lib/router-compat";
 import { useMemberStatus } from "@/hooks/useMemberStatus";
