@@ -1,8 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import {
-  needsEarlyBelieverBackfill,
-  toBaselineStatus,
+  applyMemberBaseline,
   toMemberStatus,
   type MemberStatus,
 } from "@/lib/membership-rules";
@@ -21,23 +20,28 @@ export const ensureMemberBaseline = createServerFn({ method: "POST" })
   .handler(async ({ context }): Promise<MemberStatus> => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    const { data: profile } = await supabaseAdmin
-      .from("profiles")
-      .select(PROFILE_COLUMNS)
-      .eq("id", context.userId)
-      .maybeSingle();
-
-    if (needsEarlyBelieverBackfill(profile)) {
-      await supabaseAdmin
-        .from("profiles")
-        .update({ is_early_believer: true })
-        .eq("id", context.userId);
-    }
-
-    const { awardBadges } = await import("./badge-grants.server");
-    await awardBadges(context.userId, ["early_believer"], "system", { reason: "registration" });
-
-    return toBaselineStatus(profile);
+    return applyMemberBaseline({
+      fetchProfile: async () => {
+        const { data } = await supabaseAdmin
+          .from("profiles")
+          .select(PROFILE_COLUMNS)
+          .eq("id", context.userId)
+          .maybeSingle();
+        return data;
+      },
+      markEarlyBeliever: async () => {
+        await supabaseAdmin
+          .from("profiles")
+          .update({ is_early_believer: true })
+          .eq("id", context.userId);
+      },
+      awardEarlyBelieverBadge: async () => {
+        const { awardBadges } = await import("./badge-grants.server");
+        await awardBadges(context.userId, ["early_believer"], "system", {
+          reason: "registration",
+        });
+      },
+    });
   });
 
 /** Read-only membership snapshot for the signed-in member. */
