@@ -1,3 +1,11 @@
+import {
+  BACKGROUND_OPTIONS,
+  TYPOGRAPHY_OPTIONS,
+  profileStyleOf,
+  withProfileStyle,
+  type BackgroundId,
+  type TypographyId,
+} from "@/lib/profile-style";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SocialPlatformIcon } from "@/lib/social-icons";
 import {
@@ -89,18 +97,6 @@ const TABS: { id: StudioTab; label: string; icon: typeof Link2; verifiedOnly?: b
   { id: "identity", label: "Domains & Bluesky", icon: Globe, verifiedOnly: true },
   { id: "settings", label: "Settings & verified", icon: Settings },
 ];
-
-const TYPOGRAPHY_OPTIONS = [
-  { id: "sans", label: "Modern (Sans)" },
-  { id: "serif", label: "Classic (Serif)" },
-  { id: "mono", label: "Technical (Mono)" },
-] as const;
-
-const BACKGROUND_OPTIONS = [
-  { id: "solid", label: "Solid" },
-  { id: "grid", label: "Subtle Grid" },
-  { id: "gradient", label: "Soft Gradient" },
-] as const;
 
 const QUICK_CREATE = [
   { kind: "link", label: "+ Link" },
@@ -387,6 +383,10 @@ export function ProfileEditor() {
       theme,
       card_style: cardStyle,
       blocks: blocks as unknown as never,
+      business_info: withProfileStyle(businessInfo, {
+        typography,
+        background: backgroundStyle,
+      }) as unknown as never,
     });
     setSaving(false);
     if (error) {
