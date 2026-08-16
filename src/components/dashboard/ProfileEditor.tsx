@@ -1121,7 +1121,7 @@ export function ProfileEditor() {
           <div className="mx-auto w-full max-w-[300px] overflow-hidden rounded-[2rem] border-[6px] border-foreground/85 bg-background shadow-lg">
             <div className="h-[520px] overflow-y-auto">
               <div className="origin-top scale-[0.82]">
-                <ProfileView profile={previewDraft} free={!verified} />
+                <ProfileView profile={previewDraft} free={!verified} style={{ typography, background: backgroundStyle }} />
               </div>
             </div>
           </div>
@@ -1175,7 +1175,7 @@ export function ProfileEditor() {
           <div className="flex min-h-0 flex-1 items-start justify-center overflow-y-auto bg-muted/30 p-4">
             <div className="mx-auto w-full max-w-[320px] overflow-hidden rounded-[2rem] border-[8px] border-foreground/85 bg-background shadow-xl">
               <div className="h-[560px] overflow-y-auto">
-                <ProfileView profile={previewDraft} free={!verified} />
+                <ProfileView profile={previewDraft} free={!verified} style={{ typography, background: backgroundStyle }} />
               </div>
             </div>
           </div>
