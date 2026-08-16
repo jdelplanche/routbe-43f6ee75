@@ -1,54 +1,30 @@
-import { useEffect } from "react";
 import { RouteErrorFallback, RoutePendingSkeleton } from "@/components/RouteFallbacks";
-import { createFileRoute, useParams, Link } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ProfileMissing, ProfileView } from "@/components/profile/ProfileView";
 import { ProfileSuspended } from "@/components/profile/ProfileSuspended";
-import { useProfileRecord } from "@/hooks/useProfileRecord";
+import { getPublicProfile } from "@/lib/public-profile.functions";
+import { profileHead } from "@/lib/profile-head";
 import { useI18n } from "@/lib/i18n";
 
 /**
  * Clean namespace: `rout.be/<handle>` is reserved for verified members.
  * Unverified handles keep living under `/u/<handle>` so the root namespace
- * never collides with product routes.
+ * never collides with product routes. Server-rendered for SEO and social cards.
  */
 export const Route = createFileRoute("/$username")({
-  ssr: false,
-  head: () => ({
-    meta: [
-      { title: "ROUT profile" },
-      {
-        name: "description",
-        content: "A ROUT link hub — every channel behind one sovereign handle.",
-      },
-      { property: "og:title", content: "ROUT profile" },
-      { property: "og:description", content: "A ROUT link hub — every channel behind one handle." },
-      { property: "og:type", content: "profile" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
+  loader: ({ params }) => getPublicProfile({ data: { username: params.username } }),
+  head: ({ params, loaderData }) =>
+    profileHead(params.username.replace(/^@/, "").toLowerCase(), loaderData),
   errorComponent: RouteErrorFallback,
   pendingComponent: RoutePendingSkeleton,
   component: CleanProfile,
 });
 
 function CleanProfile() {
-  const { username } = useParams({ from: "/$username" });
+  const { username } = Route.useParams();
+  const { profile, suspended } = Route.useLoaderData();
   const { t } = useI18n();
   const handle = username.replace(/^@/, "").toLowerCase();
-  const { profile, suspended, loading } = useProfileRecord(handle);
-
-  useEffect(() => {
-    if (profile) document.title = `${profile.display_name || `@${profile.username}`} — ROUT`;
-  }, [profile]);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
 
   if (!profile) return <ProfileMissing username={handle} />;
 
@@ -72,5 +48,5 @@ function CleanProfile() {
     );
   }
 
-  return <ProfileView profile={profile} />;
+  return <ProfileView profile={profile} style={profile.style} />;
 }
