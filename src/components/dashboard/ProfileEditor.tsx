@@ -206,28 +206,21 @@ export function ProfileEditor() {
         setHandle(normalizeHandle(wanted || user.email?.split("@")[0] || ""));
         setDisplayName((user.user_metadata?.full_name as string | undefined) ?? "");
       }
-      // Extra styling prefs (typography / background) live client-side only for now.
-      try {
-        const raw = localStorage.getItem(`rout_studio_extra_${user.id}`);
-        if (raw) {
-          const parsed = JSON.parse(raw) as { typography?: string; backgroundStyle?: string };
-          if (parsed.typography) setTypography(parsed.typography);
-          if (parsed.backgroundStyle) setBackgroundStyle(parsed.backgroundStyle);
-        }
-      } catch {
-        /* ignore */
-      }
+      // Presentation prefs (typography / background) are stored server-side in
+      // profiles.business_info so they render on the public hub too.
+      const { data: extra } = await supabase
+        .from("profiles")
+        .select("business_info")
+        .eq("id", user.id)
+        .maybeSingle();
+      setBusinessInfo(extra?.business_info ?? null);
+      const style = profileStyleOf(extra?.business_info);
+      setTypography(style.typography);
+      setBackgroundStyle(style.background);
       setLoading(false);
     })();
   }, [user]);
 
-  useEffect(() => {
-    if (!user || loading) return;
-    localStorage.setItem(
-      `rout_studio_extra_${user.id}`,
-      JSON.stringify({ typography, backgroundStyle }),
-    );
-  }, [user, loading, typography, backgroundStyle]);
 
   // Privacy-first counters: only aggregated counts, no visitor profiles.
   useEffect(() => {
