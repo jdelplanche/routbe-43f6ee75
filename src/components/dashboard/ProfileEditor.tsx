@@ -163,9 +163,11 @@ export function ProfileEditor() {
   const [faviconUrl, setFaviconUrl] = useState("");
   const [theme, setTheme] = useState("noir");
   const [cardStyle, setCardStyle] = useState("bordered");
-  const [typography, setTypography] = useState<string>("sans");
-  const [backgroundStyle, setBackgroundStyle] = useState<string>("solid");
+  const [typography, setTypography] = useState<TypographyId>("sans");
+  const [backgroundStyle, setBackgroundStyle] = useState<BackgroundId>("solid");
+  const [businessInfo, setBusinessInfo] = useState<unknown>(null);
   const [blocks, setBlocks] = useState<ProfileBlock[]>([]);
+
   const [verified, setVerified] = useState(false);
   const [legalName, setLegalName] = useState<string | null>(null);
   const [drawer, setDrawer] = useState(false);
