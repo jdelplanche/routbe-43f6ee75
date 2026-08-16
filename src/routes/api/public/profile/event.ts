@@ -53,12 +53,17 @@ export const Route = createFileRoute("/api/public/profile/event")({
             }
           }
 
-          await supabaseAdmin.from("analytics_events").insert({
+          // `link_click` requires the extended check constraint shipped in
+          // db/manual/20260817_profile_analytics_events.sql. Until it is applied
+          // the insert is rejected (23514) and we simply drop the event.
+          const { error } = await supabaseAdmin.from("analytics_events").insert({
             profile_id: profile.id,
-            event_type: type === "click" ? `click:${kind || "link"}` : "view",
+            event_type: type === "click" ? "link_click" : "profile_view",
             device_type: device,
-            referrer,
+            // Clicks reuse the referrer column to store the block kind.
+            referrer: type === "click" ? kind || "link" : referrer,
           });
+          if (error) console.error("[profile-event] insert failed", error.code, error.message);
 
           return new Response(null, { status: 204 });
         } catch (error) {
