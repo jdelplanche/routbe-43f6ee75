@@ -1,3 +1,11 @@
+import {
+  BACKGROUND_OPTIONS,
+  TYPOGRAPHY_OPTIONS,
+  profileStyleOf,
+  withProfileStyle,
+  type BackgroundId,
+  type TypographyId,
+} from "@/lib/profile-style";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SocialPlatformIcon } from "@/lib/social-icons";
 import {
@@ -90,18 +98,6 @@ const TABS: { id: StudioTab; label: string; icon: typeof Link2; verifiedOnly?: b
   { id: "settings", label: "Settings & verified", icon: Settings },
 ];
 
-const TYPOGRAPHY_OPTIONS = [
-  { id: "sans", label: "Modern (Sans)" },
-  { id: "serif", label: "Classic (Serif)" },
-  { id: "mono", label: "Technical (Mono)" },
-] as const;
-
-const BACKGROUND_OPTIONS = [
-  { id: "solid", label: "Solid" },
-  { id: "grid", label: "Subtle Grid" },
-  { id: "gradient", label: "Soft Gradient" },
-] as const;
-
 const QUICK_CREATE = [
   { kind: "link", label: "+ Link" },
   { kind: "__socials", label: "+ Socials" },
@@ -163,9 +159,11 @@ export function ProfileEditor() {
   const [faviconUrl, setFaviconUrl] = useState("");
   const [theme, setTheme] = useState("noir");
   const [cardStyle, setCardStyle] = useState("bordered");
-  const [typography, setTypography] = useState<string>("sans");
-  const [backgroundStyle, setBackgroundStyle] = useState<string>("solid");
+  const [typography, setTypography] = useState<TypographyId>("sans");
+  const [backgroundStyle, setBackgroundStyle] = useState<BackgroundId>("solid");
+  const [businessInfo, setBusinessInfo] = useState<unknown>(null);
   const [blocks, setBlocks] = useState<ProfileBlock[]>([]);
+
   const [verified, setVerified] = useState(false);
   const [legalName, setLegalName] = useState<string | null>(null);
   const [drawer, setDrawer] = useState(false);
@@ -206,28 +204,21 @@ export function ProfileEditor() {
         setHandle(normalizeHandle(wanted || user.email?.split("@")[0] || ""));
         setDisplayName((user.user_metadata?.full_name as string | undefined) ?? "");
       }
-      // Extra styling prefs (typography / background) live client-side only for now.
-      try {
-        const raw = localStorage.getItem(`rout_studio_extra_${user.id}`);
-        if (raw) {
-          const parsed = JSON.parse(raw) as { typography?: string; backgroundStyle?: string };
-          if (parsed.typography) setTypography(parsed.typography);
-          if (parsed.backgroundStyle) setBackgroundStyle(parsed.backgroundStyle);
-        }
-      } catch {
-        /* ignore */
-      }
+      // Presentation prefs (typography / background) are stored server-side in
+      // profiles.business_info so they render on the public hub too.
+      const { data: extra } = await supabase
+        .from("profiles")
+        .select("business_info")
+        .eq("id", user.id)
+        .maybeSingle();
+      setBusinessInfo(extra?.business_info ?? null);
+      const style = profileStyleOf(extra?.business_info);
+      setTypography(style.typography);
+      setBackgroundStyle(style.background);
       setLoading(false);
     })();
   }, [user]);
 
-  useEffect(() => {
-    if (!user || loading) return;
-    localStorage.setItem(
-      `rout_studio_extra_${user.id}`,
-      JSON.stringify({ typography, backgroundStyle }),
-    );
-  }, [user, loading, typography, backgroundStyle]);
 
   // Privacy-first counters: only aggregated counts, no visitor profiles.
   useEffect(() => {
@@ -392,6 +383,10 @@ export function ProfileEditor() {
       theme,
       card_style: cardStyle,
       blocks: blocks as unknown as never,
+      business_info: withProfileStyle(businessInfo, {
+        typography,
+        background: backgroundStyle,
+      }) as unknown as never,
     });
     setSaving(false);
     if (error) {
@@ -1126,7 +1121,7 @@ export function ProfileEditor() {
           <div className="mx-auto w-full max-w-[300px] overflow-hidden rounded-[2rem] border-[6px] border-foreground/85 bg-background shadow-lg">
             <div className="h-[520px] overflow-y-auto">
               <div className="origin-top scale-[0.82]">
-                <ProfileView profile={previewDraft} free={!verified} />
+                <ProfileView profile={previewDraft} free={!verified} style={{ typography, background: backgroundStyle }} />
               </div>
             </div>
           </div>
@@ -1180,7 +1175,7 @@ export function ProfileEditor() {
           <div className="flex min-h-0 flex-1 items-start justify-center overflow-y-auto bg-muted/30 p-4">
             <div className="mx-auto w-full max-w-[320px] overflow-hidden rounded-[2rem] border-[8px] border-foreground/85 bg-background shadow-xl">
               <div className="h-[560px] overflow-y-auto">
-                <ProfileView profile={previewDraft} free={!verified} />
+                <ProfileView profile={previewDraft} free={!verified} style={{ typography, background: backgroundStyle }} />
               </div>
             </div>
           </div>

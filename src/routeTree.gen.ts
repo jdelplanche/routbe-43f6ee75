@@ -58,6 +58,7 @@ import { Route as ApiPublicEmailConfirmForwardRouteImport } from './routes/api/p
 import { Route as ApiPublicFileSplatRouteImport } from './routes/api/public/file.$'
 import { Route as ApiPublicMcpRunRouteImport } from './routes/api/public/mcp/run'
 import { Route as ApiPublicPaymentsInboundRouteImport } from './routes/api/public/payments/inbound'
+import { Route as ApiPublicProfileEventRouteImport } from './routes/api/public/profile/event'
 import { Route as ApiPublicQrCreateRouteImport } from './routes/api/public/qr/create'
 import { Route as ApiPublicQrManageRouteImport } from './routes/api/public/qr/manage'
 import { Route as ApiPublicQrStatsRouteImport } from './routes/api/public/qr/stats'
@@ -323,6 +324,11 @@ const ApiPublicPaymentsInboundRoute =
     path: '/public/payments/inbound',
     getParentRoute: () => ApiRoute,
   } as any)
+const ApiPublicProfileEventRoute = ApiPublicProfileEventRouteImport.update({
+  id: '/public/profile/event',
+  path: '/public/profile/event',
+  getParentRoute: () => ApiRoute,
+} as any)
 const ApiPublicQrCreateRoute = ApiPublicQrCreateRouteImport.update({
   id: '/public/qr/create',
   path: '/public/qr/create',
@@ -403,6 +409,7 @@ export interface FileRoutesByFullPath {
   '/api/public/file/$': typeof ApiPublicFileSplatRoute
   '/api/public/mcp/run': typeof ApiPublicMcpRunRoute
   '/api/public/payments/inbound': typeof ApiPublicPaymentsInboundRoute
+  '/api/public/profile/event': typeof ApiPublicProfileEventRoute
   '/api/public/qr/create': typeof ApiPublicQrCreateRoute
   '/api/public/qr/manage': typeof ApiPublicQrManageRoute
   '/api/public/qr/stats': typeof ApiPublicQrStatsRoute
@@ -458,6 +465,7 @@ export interface FileRoutesByTo {
   '/api/public/file/$': typeof ApiPublicFileSplatRoute
   '/api/public/mcp/run': typeof ApiPublicMcpRunRoute
   '/api/public/payments/inbound': typeof ApiPublicPaymentsInboundRoute
+  '/api/public/profile/event': typeof ApiPublicProfileEventRoute
   '/api/public/qr/create': typeof ApiPublicQrCreateRoute
   '/api/public/qr/manage': typeof ApiPublicQrManageRoute
   '/api/public/qr/stats': typeof ApiPublicQrStatsRoute
@@ -516,6 +524,7 @@ export interface FileRoutesById {
   '/api/public/file/$': typeof ApiPublicFileSplatRoute
   '/api/public/mcp/run': typeof ApiPublicMcpRunRoute
   '/api/public/payments/inbound': typeof ApiPublicPaymentsInboundRoute
+  '/api/public/profile/event': typeof ApiPublicProfileEventRoute
   '/api/public/qr/create': typeof ApiPublicQrCreateRoute
   '/api/public/qr/manage': typeof ApiPublicQrManageRoute
   '/api/public/qr/stats': typeof ApiPublicQrStatsRoute
@@ -574,6 +583,7 @@ export interface FileRouteTypes {
     | '/api/public/file/$'
     | '/api/public/mcp/run'
     | '/api/public/payments/inbound'
+    | '/api/public/profile/event'
     | '/api/public/qr/create'
     | '/api/public/qr/manage'
     | '/api/public/qr/stats'
@@ -629,6 +639,7 @@ export interface FileRouteTypes {
     | '/api/public/file/$'
     | '/api/public/mcp/run'
     | '/api/public/payments/inbound'
+    | '/api/public/profile/event'
     | '/api/public/qr/create'
     | '/api/public/qr/manage'
     | '/api/public/qr/stats'
@@ -686,6 +697,7 @@ export interface FileRouteTypes {
     | '/api/public/file/$'
     | '/api/public/mcp/run'
     | '/api/public/payments/inbound'
+    | '/api/public/profile/event'
     | '/api/public/qr/create'
     | '/api/public/qr/manage'
     | '/api/public/qr/stats'
@@ -1071,6 +1083,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaymentsInboundRouteImport
       parentRoute: typeof ApiRoute
     }
+    '/api/public/profile/event': {
+      id: '/api/public/profile/event'
+      path: '/public/profile/event'
+      fullPath: '/api/public/profile/event'
+      preLoaderRoute: typeof ApiPublicProfileEventRouteImport
+      parentRoute: typeof ApiRoute
+    }
     '/api/public/qr/create': {
       id: '/api/public/qr/create'
       path: '/public/qr/create'
@@ -1170,6 +1189,7 @@ interface ApiRouteChildren {
   ApiPublicFileSplatRoute: typeof ApiPublicFileSplatRoute
   ApiPublicMcpRunRoute: typeof ApiPublicMcpRunRoute
   ApiPublicPaymentsInboundRoute: typeof ApiPublicPaymentsInboundRoute
+  ApiPublicProfileEventRoute: typeof ApiPublicProfileEventRoute
   ApiPublicQrCreateRoute: typeof ApiPublicQrCreateRoute
   ApiPublicQrManageRoute: typeof ApiPublicQrManageRoute
   ApiPublicQrStatsRoute: typeof ApiPublicQrStatsRoute
@@ -1187,6 +1207,7 @@ const ApiRouteChildren: ApiRouteChildren = {
   ApiPublicFileSplatRoute: ApiPublicFileSplatRoute,
   ApiPublicMcpRunRoute: ApiPublicMcpRunRoute,
   ApiPublicPaymentsInboundRoute: ApiPublicPaymentsInboundRoute,
+  ApiPublicProfileEventRoute: ApiPublicProfileEventRoute,
   ApiPublicQrCreateRoute: ApiPublicQrCreateRoute,
   ApiPublicQrManageRoute: ApiPublicQrManageRoute,
   ApiPublicQrStatsRoute: ApiPublicQrStatsRoute,
