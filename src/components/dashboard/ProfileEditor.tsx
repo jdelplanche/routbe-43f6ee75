@@ -1022,33 +1022,12 @@ export function ProfileEditor() {
                 )}
               </div>
 
-              <div className="rounded-xl border border-border p-3">
-                <p className="mb-2 text-xs font-medium text-muted-foreground">
-                  Top Clicked Components
-                </p>
-                {topClicked.length === 0 ? (
-                  <p className="py-4 text-center text-xs text-muted-foreground">
-                    No click data yet.
-                  </p>
-                ) : (
-                  <ul className="space-y-2">
-                    {topClicked.map(({ block, clicks }) => (
-                      <li key={block.id} className="space-y-1">
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="truncate font-medium">{block.label}</span>
-                          <span className="shrink-0 text-muted-foreground">{clicks} clicks</span>
-                        </div>
-                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                          <div
-                            className="h-full rounded-full bg-foreground"
-                            style={{ width: `${Math.max(4, (clicks / maxClicks) * 100)}%` }}
-                          />
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+              <HubAnalytics
+                blocks={blocks}
+                days={RANGE_OPTIONS.find((r) => r.id === range)?.days ?? null}
+                handle={claimed || normalized}
+              />
+
             </section>
           )}
 
