@@ -51,6 +51,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FileUploadInput } from "@/components/FileUploadInput";
+import { HubAnalytics } from "@/components/dashboard/HubAnalytics";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -483,22 +484,6 @@ export function ProfileEditor() {
       .filter((c) => c.items.length > 0);
   }, [cat, query]);
 
-  // Top clicked components: proportional estimate over total scans, ranked by position
-  // until per-block click tracking ships. Purely presentational, no fabricated identities.
-  const topClicked = useMemo(() => {
-    const visible = blocks.filter((b) => !b.hidden && b.value);
-    if (!visible.length || !stats?.scans) return [];
-    const weights = visible.map((_, i) => visible.length - i);
-    const totalWeight = weights.reduce((a, b) => a + b, 0);
-    return visible
-      .map((b, i) => {
-        const clicks = Math.round((weights[i] / totalWeight) * stats.scans);
-        return { block: b, clicks };
-      })
-      .sort((a, b) => b.clicks - a.clicks)
-      .slice(0, 6);
-  }, [blocks, stats]);
-  const maxClicks = topClicked[0]?.clicks || 1;
 
   if (loading) {
     return (
@@ -1022,33 +1007,12 @@ export function ProfileEditor() {
                 )}
               </div>
 
-              <div className="rounded-xl border border-border p-3">
-                <p className="mb-2 text-xs font-medium text-muted-foreground">
-                  Top Clicked Components
-                </p>
-                {topClicked.length === 0 ? (
-                  <p className="py-4 text-center text-xs text-muted-foreground">
-                    No click data yet.
-                  </p>
-                ) : (
-                  <ul className="space-y-2">
-                    {topClicked.map(({ block, clicks }) => (
-                      <li key={block.id} className="space-y-1">
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="truncate font-medium">{block.label}</span>
-                          <span className="shrink-0 text-muted-foreground">{clicks} clicks</span>
-                        </div>
-                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                          <div
-                            className="h-full rounded-full bg-foreground"
-                            style={{ width: `${Math.max(4, (clicks / maxClicks) * 100)}%` }}
-                          />
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+              <HubAnalytics
+                blocks={blocks}
+                days={RANGE_OPTIONS.find((r) => r.id === range)?.days ?? null}
+                handle={claimed || normalized}
+              />
+
             </section>
           )}
 
